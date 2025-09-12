@@ -106,3 +106,15 @@ it is a authentication laravel library
     composer install
     php artisan key:generate
     php artisan migrate --seed
+
+# APIs
+
+Consulta Taxonômica e informações classificatórias:
+
+> https://techdocs.gbif.org/en/openapi/v1/species#/
+
+> https://api.gbif.org/v1/species/match?name=Homo%20sapiens
+
+Dados gerais e imagens:
+
+> https://api.inaturalist.org/v1/taxa?q=Panthera%20leo
