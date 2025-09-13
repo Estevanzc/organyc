@@ -109,12 +109,28 @@ it is a authentication laravel library
 
 # APIs
 
-Consulta Taxonômica e informações classificatórias:
+## Consulta Taxonômica e informações classificatórias:
 
 > https://techdocs.gbif.org/en/openapi/v1/species#/
 
 > https://api.gbif.org/v1/species/match?name=Homo%20sapiens
 
-Dados gerais e imagens:
+> https://api.iucnredlist.org/api-docs/index.html
+
+## Dados gerais e imagens:
 
 > https://api.inaturalist.org/v1/taxa?q=Panthera%20leo
+
+## APIs para plantas
+
+> https://perenual.com/docs/plant-open-api#/
+`sk-Jaho68c4c4525388112349`
+
+
+## APIs para animais
+
+https://api-ninjas.com/api/animals
+
+`ZOuaMCrn60TxdcTBNSE3Wg==TDcSvx1ca3BeHQPI`
+
+https://api.api-ninjas.com/v1/animals?name=cheetah&X-Api-Key=ZOuaMCrn60TxdcTBNSE3Wg==TDcSvx1ca3BeHQPI
