@@ -35,7 +35,8 @@ return new class extends Migration
             $table->enum("toxicity_level", ["Non-toxic", "Mildly toxic", "Moderately toxic", "Highly toxic", "Lethal"])->default("Non-toxic");
             $table->enum("treatment_necessity", ['None','Self-care','Recommended','Urgent','Critical'])->default("None");
             $table->text("description")->nullable();
-            $table->integer("usageKey"); // gbif API id
+            $table->integer("inaturalist_id");
+            $table->integer("gbif_id");
             $table->foreignId("specie_id")->constrained()->onDelete("cascade");
             $table->timestamps();
         });

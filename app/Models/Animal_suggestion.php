@@ -24,7 +24,8 @@ class Animal_suggestion extends Model {
         "treatment_necessity",
         "prevention",
         "description",
-        "usageKey",
+        "inaturalist_id",
+        "gbif_id",
         "specie_id",
     ];
     public function specie(): BelongsTo {

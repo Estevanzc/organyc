@@ -31,7 +31,8 @@ class Plant_suggestion extends Model {
         "toxicity_level",
         "treatment_necessity",
         "description",
-        "usageKey",
+        "inaturalist_id",
+        "gbif_id",
         "specie_id",
     ];
     public function specie(): BelongsTo {

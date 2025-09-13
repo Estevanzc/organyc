@@ -111,11 +111,8 @@ it is a authentication laravel library
 
 ## Consulta Taxonômica e informações classificatórias:
 
-> https://techdocs.gbif.org/en/openapi/v1/species#/
-
-> https://api.gbif.org/v1/species/match?name=Homo%20sapiens
-
 > https://api.iucnredlist.org/api-docs/index.html
+`Fhc6oLwy3nXfpXZNPYFToLNstXNTGtJ9oHj2`
 
 ## Dados gerais e imagens:
 
@@ -134,3 +131,35 @@ https://api-ninjas.com/api/animals
 `ZOuaMCrn60TxdcTBNSE3Wg==TDcSvx1ca3BeHQPI`
 
 https://api.api-ninjas.com/v1/animals?name=cheetah&X-Api-Key=ZOuaMCrn60TxdcTBNSE3Wg==TDcSvx1ca3BeHQPI
+
+### Gbif (animais e plantas)
+> https://techdocs.gbif.org/en/openapi/v1/species#/
+
+#### dados gerais: taxonomia, ancestral, número de decendentes
+> https://api.gbif.org/v1/species/5231190/
+
+#### busca por nome científico
+> https://api.gbif.org/v1/species/match?name=Tulipa%20linifolia
+
+#### nomes vernaculares
+> https://api.gbif.org/v1/species/5299508/vernacularNames
+
+#### categoria de extinção
+> https://api.gbif.org/v1/species/5299508/iucnRedListCategory
+
+#### localidades
+> https://api.gbif.org/v1/species/5231190/distributions
+
+#### habitats, mobilidade e expectativa de vida
+> https://api.gbif.org/v1/species/5231190/descriptions
+
+
+### inaturalist
+
+### página wikipedia, imagem, ancestrais
+> https://api.inaturalist.org/v1/taxa?q=Panthera%20leo
+
+
+
+
+wXfcRsfmO2oejfPAyyWsslb-eoMw0_5ak-1Ngv3HonEuJcC7McZs5R3eJQFo8uVhAable3dleWrlDeRlGxo2XUmRcfOXWp1-4UKU0NJYMajXySSYL0f8TWGrGUZXxyXUvZpg_rOEvSkKL2BG1AOvlv3uE8S5iryUMrrmXgF1MZ4=
