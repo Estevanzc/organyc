@@ -8,3 +8,4 @@ Route::get('/', function () {
 });
 
 Route::post("/test", [CreatureController::class, "api_test"])->name("api_test");
+Route::get("/api/{search_value}/{search_type?}/{is_id?}", [CreatureController::class, "api_fetcher"])->name("gbif_api");
