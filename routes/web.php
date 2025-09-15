@@ -7,5 +7,9 @@ Route::get('/', function () {
     return view('test_api');
 });
 
-Route::post("/test", [CreatureController::class, "api_test"])->name("api_test");
+Route::prefix("/creature")->group(function() {
+    Route::get("/view/{gbif_id}/{is_plant?}", [CreatureController::class, "view"])->name("creature.view");
+    Route::get("/create/{gbif_id}/{is_plant?}", [CreatureController::class, "create"])->name("creature.create");
+});
+Route::post("/test", [CreatureController::class, "recognizer"])->name("api_test");
 Route::get("/api/{search_value}/{search_type?}/{is_id?}", [CreatureController::class, "api_fetcher"])->name("gbif_api");

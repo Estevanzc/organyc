@@ -37,6 +37,7 @@ return new class extends Migration
             $table->text("description")->nullable();
             $table->integer("inaturalist_id");
             $table->integer("gbif_id");
+            $table->integer("eol_id");
             $table->foreignId("specie_id")->constrained()->onDelete("cascade");
             $table->timestamps();
         });

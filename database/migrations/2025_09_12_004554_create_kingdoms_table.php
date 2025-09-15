@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('kingdoms', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->foreignId("domain_id")->constrained()->onDelete("cascade");
             $table->timestamps();
         });
     }

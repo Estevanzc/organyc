@@ -34,6 +34,7 @@ class Plant extends Model {
         "description",
         "inaturalist_id",
         "gbif_id",
+        "eol_id",
         "specie_id",
     ];
     public function photos(): HasMany {
