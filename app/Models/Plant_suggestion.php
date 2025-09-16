@@ -33,7 +33,14 @@ class Plant_suggestion extends Model {
         "description",
         "inaturalist_id",
         "gbif_id",
-        "specie_id",
+        "photo",
+        "kingdom",
+        "phylum",
+        "class",
+        "order",
+        "family",
+        "genu",
+        "specie",
     ];
     public function specie(): BelongsTo {
         return $this->belongsTo(Specie::class);

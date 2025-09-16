@@ -30,8 +30,14 @@ return new class extends Migration
             $table->text("description")->nullable();
             $table->integer("inaturalist_id");
             $table->integer("gbif_id");
-            $table->integer("eol_id");
-            $table->foreignId("specie_id")->constrained()->onDelete("cascade");
+            $table->string("photo");
+            $table->string("kingdom");
+            $table->string("phylum");
+            $table->string("class");
+            $table->string("order");
+            $table->string("family");
+            $table->string("genu");
+            $table->string("specie");
             $table->timestamps();
         });
     }

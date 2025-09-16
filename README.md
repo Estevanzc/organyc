@@ -158,7 +158,7 @@ https://api.api-ninjas.com/v1/animals?name=cheetah&X-Api-Key=ZOuaMCrn60TxdcTBNSE
 
 ### página wikipedia, imagem, ancestrais
 > https://api.inaturalist.org/v1/taxa?q=Panthera%20leo
-
+https://www.inaturalist.org/users/api_token
 
 
 
