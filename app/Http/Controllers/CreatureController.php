@@ -15,6 +15,7 @@ use App\Models\Specie;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class CreatureController extends Controller {
     public function recognizer(Request $request) {
@@ -112,15 +113,15 @@ class CreatureController extends Controller {
     public function create($gbif_id, $is_plant = 0) {
         $is_plant = $is_plant == 1 ? true : false;
         $form_data = [
-            ["common_name" => "","conservation_status" => "","type" => "","growth_form" => "","leaf_type" => "","leaf_arrangement" => "","fruit_type" => "","root_type" => "","soil" => "","sunlight" => "","water" => "","reproduction" => "","height" => "","locale" => "","habitat" => "","diet" => "","life_span" => "","growth_time" => "","color" => "","toxicity_level" => "","treatment_necessity" => "","description" => "","inaturalist_id" => "","gbif_id" => $gbif_id,"eol_id" => "","specie_id" => ""],
-            ["common_name" => "","conservation_status" => "","weight" => "","height" => "","length" => "","locale" => "","habitat" => "","diet" => "","reproduction" => "","life_span" => "","color" => "","danger_level" => "","treatment_necessity" => "","prevention" => "","description" => "","inaturalist_id" => "","gbif_id" => $gbif_id,"eol_id" => "","specie_id" => ""]
+            ["common_name" => "","conservation_status" => "","type" => "","growth_form" => "","leaf_type" => "","leaf_arrangement" => "","fruit_type" => "","root_type" => "","soil" => "","sunlight" => "","water" => "","reproduction" => "","height" => "","locale" => "","habitat" => "","diet" => "","life_span" => "","growth_time" => "","color" => "","toxicity_level" => "","treatment_necessity" => "","description" => "","inaturalist_id" => "","gbif_id" => $gbif_id,"eol_id" => ""],
+            ["common_name" => "","conservation_status" => "","weight" => "","height" => "","length" => "","locale" => "","habitat" => "","diet" => "","reproduction" => "","life_span" => "","color" => "","danger_level" => "","treatment_necessity" => "","prevention" => "","description" => "","inaturalist_id" => "","gbif_id" => $gbif_id,"eol_id" => ""]
         ][$is_plant ? 0 : 1];
         $gbif_data = $this->api_fetcher($gbif_id, 1, 1);
         $form_data["taxon"] = [
             "kingdom" => $gbif_data["kingdom"] ?? "",
             "phylum" => $gbif_data["phylum"] ?? "",
             "class" => $gbif_data["class"] ?? "",
-            "order" => $gbif_data["order"] ?? ($gbif_data["class"] ?? ""),
+            "order" => $gbif_data["order"] ?? "",
             "family" => $gbif_data["family"] ?? "",
             "genu" => $gbif_data["genus"] ?? "",
             "specie" => $gbif_data["species"] ?? "",
@@ -135,11 +136,13 @@ class CreatureController extends Controller {
                 break;
             }
         }
+        $form_data["inaturalist_id"] = (int) $inaturalist_data["id"];
         $form_data["photo"] = $inaturalist_data["default_photo"]["medium_url"];
         $common_name = explode(" ", $eol_data[1]);
         $common_name = $common_name[(sizeof($common_name)-1)];
-        if ($is_plant) {
-        } else {
+        $conservation_data = $this->api_fetcher($gbif_id, 3);
+        $form_data["conservation_status"] = $conservation_data["category"] ?? "";
+        if (!$is_plant) {
             $animals_data = $this->api_fetcher($common_name, 9);
             $animal_data = null;
             $matches = [];
@@ -149,20 +152,11 @@ class CreatureController extends Controller {
                     $animal_data = $animal;
                     break;
                 } else {
-                    $taxonomy = $animal["taxonomy"];
+                    $animal_name = explode(" ", $animal["name"]);
                     $score = 0;
-                    $names = [
-                        $form_data["taxon"]["kingdom"],
-                        $form_data["taxon"]["phylum"],
-                        $form_data["taxon"]["class"],
-                        $form_data["taxon"]["order"],
-                        $form_data["taxon"]["family"],
-                        $form_data["taxon"]["genu"],
-                        $form_data["taxon"]["specie"],
-                    ];
-                    foreach ($taxonomy as $taxon_value) {
-                        if (in_array($taxon_value, $names)) {
-                            $score ++;
+                    foreach ($eol_data[2] as $names) {
+                        foreach ($animal_name as $name) {
+                            $score += in_array(strtolower($name), $names) ? 1 : -1;
                         }
                     }
                     $matches[] = [
@@ -173,8 +167,6 @@ class CreatureController extends Controller {
                 $idx ++;
             }
             if (empty($animal_data)) {
-                dd($animals_data, $gbif_data);
-                dd($matches);
                 $match_item = [
                     0,
                     0,
@@ -186,9 +178,18 @@ class CreatureController extends Controller {
                 }
                 $animal_data = $animals_data[$match_item[0]];
             }
-            dd($animals_data);
+            $form_data["diet"] = $animal_data["characteristics"]["diet"];
+            $form_data["life_span"] = trim($animal_data["characteristics"]["lifespan"]);
+            $form_data["weight"] = trim(explode("(", $animal_data["characteristics"]["weight"])[0]);
+            $form_data["color"] = $animal_data["characteristics"]["color"];
+            $form_data["locale"] = $animal_data["locations"][0];
+            $form_data["habitat"] = $animal_data["characteristics"]["habitat"];
+            foreach ($form_data["taxon"] as $taxon_name => $taxon_value) {
+                if (empty($taxon_value)) {
+                    $form_data["taxon"][$taxon_name] = $animal_data["taxonomy"][(["kingdom" => "kingdom","phylum" => "phylum","class" => "class","order" => "order","family" => "family","genu" => "genus","specie" => "scientific_name",][$taxon_name])] ?? "";
+                }
+            }
         }
-        dd($gbif_data,$eol_data, $inaturalist_data);
         return response()->json([
             "status" => 200,
             "form_data" => $form_data,
@@ -209,6 +210,7 @@ class CreatureController extends Controller {
                 return [
                     $eol_id,
                     $name["vernacularName"],
+                    array_map(function($name) {return explode(" ", strtolower($name["vernacularName"]));}, array_filter($eol_data, function($name) {return $name["language"] == "en";})),
                 ];
             }
         }

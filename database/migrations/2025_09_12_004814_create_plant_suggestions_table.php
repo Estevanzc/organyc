@@ -17,12 +17,12 @@ return new class extends Migration
             $table->enum("conservation_status", ['Least Concern','Near Threatened','Vulnerable','Endangered','Critically Endangered','Extinct in the Wild','Extinct']);
             $table->enum("type", ["Tree","Shrub","Herb","Vine","Grass","Fern","Moss","Algae","Succulent","Aquatic","Other"]);
             $table->enum("growth_form", ["Annual","Biennial","Perennial","Ephemeral","Evergreen","Deciduous","Semi-evergreen","Other"]);
-            $table->enum("leaf_type", ["Simple","Compound","Pinnate","Bipinnate","Palmate","Trifoliate","Needle-like","Scale-like","Lobed","Other"]);
-            $table->enum("leaf_arrangement", ["Alternate","Opposite","Whorled","Basal","Spiral","Distichous","Rosette","Other"]);
-            $table->enum("fruit_type", ["Berry","Drupe","Pome","Hesperidium","Pepo","Capsule","Legume","Nut","Samara","Achene","Caryopsis","Aggregate","Multiple","Other"]);
+            $table->enum("leaf_type", ["None","Simple","Compound","Pinnate","Bipinnate","Palmate","Trifoliate","Needle-like","Scale-like","Lobed","Other"]);
+            $table->enum("leaf_arrangement", ["None","Alternate","Opposite","Whorled","Basal","Spiral","Distichous","Rosette","Other"]);
+            $table->enum("fruit_type", ["None","Berry","Drupe","Pome","Hesperidium","Pepo","Capsule","Legume","Nut","Samara","Achene","Caryopsis","Aggregate","Multiple","Other"]);
             $table->enum("root_type", ["Taproot","Fibrous","Adventitious","Tuberous","Rhizome","Bulb","Corm","Aerial","Prop root","Pneumatophore","Other"]);
             $table->enum("soil", ["Sandy","Loamy","Clay","Silty","Peaty","Chalky","Saline","Rocky","Other"]);
-            $table->enum("sunlight", ["Full Sun","Partial Shade","Shade","Other"]);
+            $table->enum("sunlight", ["None","Full Sun","Partial Shade","Shade","Other"]);
             $table->enum("water", ["Low","Medium","High","Other"]);
             $table->enum("reproduction", ['Sexual','Asexual','Sexual and Asexual']);
             $table->decimal("height", 4,1);
@@ -37,6 +37,7 @@ return new class extends Migration
             $table->text("description")->nullable();
             $table->integer("inaturalist_id");
             $table->integer("gbif_id");
+            $table->integer("eol_id");
             $table->foreignId("specie_id")->constrained()->onDelete("cascade");
             $table->timestamps();
         });

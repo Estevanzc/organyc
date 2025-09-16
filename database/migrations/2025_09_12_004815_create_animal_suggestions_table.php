@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('animal_suggestions', function (Blueprint $table) {
             $table->id();
             $table->string("common_name");
-            $table->enum("conservation_status", ['Least Concern','Near Threatened','Vulnerable','Endangered','Critically Endangered','Extinct in the Wild','Extinct']);
-            $table->decimal("weight", 4,1);
-            $table->decimal("height", 4,1);
-            $table->decimal("length", 3,2);
+            $table->string("conservation_status");
+            $table->string("weight");
+            $table->string("height");
+            $table->string("length");
             $table->string("locale");
             $table->string("habitat");
             $table->enum("diet", ["Herbivore","Carnivore","Omnivore","Insectivore","Frugivore","Folivore","Nectarivore","Piscivore","Detritivore","Scavenger","Other"]);
             $table->enum("reproduction", ['Sexual','Asexual','Sexual and Asexual']);
-            $table->decimal("life_span", 2,1);
+            $table->string("life_span");
             $table->string("color");
             $table->enum("danger_level", ['Harmless','Mild','Moderate','Dangerous','Extreme'])->default("Harmless");
             $table->enum("treatment_necessity", ['None','Self-care','Recommended','Urgent','Critical'])->default("None");
@@ -30,6 +30,7 @@ return new class extends Migration
             $table->text("description")->nullable();
             $table->integer("inaturalist_id");
             $table->integer("gbif_id");
+            $table->integer("eol_id");
             $table->foreignId("specie_id")->constrained()->onDelete("cascade");
             $table->timestamps();
         });
