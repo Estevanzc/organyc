@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('animal_suggestions', function (Blueprint $table) {
             $table->id();
             $table->string("common_name");
-            $table->string("conservation_status");
+            $table->enum("conservation_status", ["N/A", "Extinct", "Extinct in the Wild", "Critically Endangered", "Endangered", "Vulnerable", "Near Threatened", "Least Concern", "Data Deficient", "Not Evaluated"])->default("N/A");
             $table->string("weight");
             $table->string("height");
             $table->string("length");
             $table->string("locale");
-            $table->string("habitat");
-            $table->enum("diet", ["Herbivore","Carnivore","Omnivore","Insectivore","Frugivore","Folivore","Nectarivore","Piscivore","Detritivore","Scavenger","Other"]);
-            $table->enum("reproduction", ['Sexual','Asexual','Sexual and Asexual']);
+            $table->string("habitat")->nullable();
+            $table->enum("diet", ["Herbivore","Carnivore","Omnivore","Insectivore","Frugivore","Folivore","Nectarivore","Piscivore","Detritivore","Scavenger","Other"])->default("Other");
+            $table->enum("reproduction", ['Sexual','Asexual','Sexual and Asexual'])->default('Sexual');
             $table->string("life_span");
             $table->string("color");
             $table->enum("danger_level", ['Harmless','Mild','Moderate','Dangerous','Extreme'])->default("Harmless");

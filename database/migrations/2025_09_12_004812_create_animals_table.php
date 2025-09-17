@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('animals', function (Blueprint $table) {
             $table->id();
             $table->string("common_name");
-            $table->enum("conservation_status", ['Least Concern','Near Threatened','Vulnerable','Endangered','Critically Endangered','Extinct in the Wild','Extinct']);
+            $table->enum("conservation_status", ["N/A", "Extinct", "Extinct in the Wild", "Critically Endangered", "Endangered", "Vulnerable", "Near Threatened", "Least Concern", "Data Deficient", "Not Evaluated"])->default("N/A");
             $table->string("weight");
             $table->string("height");
             $table->string("length");
@@ -30,7 +30,6 @@ return new class extends Migration
             $table->text("description")->nullable();
             $table->integer("inaturalist_id");
             $table->integer("gbif_id");
-            $table->integer("eol_id");
             $table->foreignId("specie_id")->constrained()->onDelete("cascade");
             $table->timestamps();
         });

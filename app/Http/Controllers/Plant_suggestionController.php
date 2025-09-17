@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Plant_suggestionRequest;
+use App\Models\Plant_suggestion;
 use Illuminate\Http\Request;
 
 class Plant_suggestionController extends Controller {
@@ -15,14 +17,19 @@ class Plant_suggestionController extends Controller {
             "form_data" => $form_data,
         ];
     }
-    public function store(Request $request) {
+    public function store(Plant_suggestionRequest $request) {
+        $request_data = $request->validated();
+        Plant_suggestion::create($request_data);
+        return redirect()->route("");
     }
     public function show(string $id) {
     }
     public function edit(string $id) {
     }
-    public function update(Request $request, string $id) {
+    public function update(Request $request) {
     }
-    public function destroy(string $id) {
+    public function destroy(Plant_suggestion $plant_suggestion) {
+        $plant_suggestion->delete();
+        return redirect()->route("");
     }
 }

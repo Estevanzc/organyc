@@ -83,7 +83,20 @@ abstract class Controller {
         $common_name = explode(" ", $common_names[0]);
         $common_name = $common_name[(sizeof($common_name)-1)];
         $conservation_data = $this->api_fetcher($gbif_id, 3);
-        $form_data["conservation_status"] = $conservation_data["category"] ?? "";
+        $convervation_codes = [
+            "EX" => "Extinct",
+            "EW" => "Extinct in the Wild",
+            "CR" => "Critically Endangered",
+            "EN" => "Endangered",
+            "VU" => "Vulnerable",
+            "NT" => "Near Threatened",
+            "LC" => "Least Concern",
+            "DD" => "Data Deficient",
+            "NE" => "Not Evaluated",
+        ];
+        if ($conservation_data["category"] ?? false) {
+            $form_data["conservation_status"] = $convervation_codes[$conservation_data["code"]];
+        }
         return $is_plant ? $form_data : [$form_data, $common_names, $common_name, $gbif_data];
     }
 }

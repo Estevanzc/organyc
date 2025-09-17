@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Animal_suggestionRequest;
+use App\Models\Animal_suggestion;
 use Illuminate\Http\Request;
 
 class Animal_suggestionController extends Controller {
@@ -63,7 +65,10 @@ class Animal_suggestionController extends Controller {
             "form_data" => $form_data[0],
         ];
     }
-    public function store(Request $request) {
+    public function store(Animal_suggestionRequest $request) {
+        $request_data = $request->validated();
+        Animal_suggestion::create($request_data);
+        return redirect()->route(""); // página de listagem de sugestões
     }
     public function show(string $id) {
     }
@@ -71,6 +76,8 @@ class Animal_suggestionController extends Controller {
     }
     public function update(Request $request, string $id) {
     }
-    public function destroy(string $id) {
+    public function destroy(Animal_suggestion $animal_suggestion) {
+        $animal_suggestion->delete();
+        return redirect()->route("");
     }
 }

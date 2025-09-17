@@ -109,6 +109,6 @@ class CreatureController extends Controller {
     public function create($gbif_id, $is_plant = 0) {
         $is_plant = $is_plant == 1 ? true : false;
         $creature = ([Plant_suggestion::class, Animal_suggestion::class][$is_plant ? 0 : 1])::where("gbif_id", $gbif_id)->first();
-        return redirect()->route(empty($creature) ? (($is_plant ? "plant" : "animal").".suggestion.create") : ($is_plant ? "" : ""), [$gbif_id, ($is_plant ? 1 : 0)]);
+        return redirect()->route((($is_plant ? "plant" : "animal").".suggestion.".(empty($creature) ? "create" : "edit")), [$gbif_id, ($is_plant ? 1 : 0)]);
     }
 }
