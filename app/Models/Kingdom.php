@@ -11,11 +11,7 @@ class Kingdom extends Model {
     use HasFactory;
     protected $fillable = [
         "name",
-        "domain_id",
     ];
-    public function domain(): BelongsTo {
-        return $this->belongsTo(Domain::class);
-    }
     public function phylums(): HasMany {
         return $this->hasMany(Phylum::class);
     }

@@ -70,11 +70,17 @@ class Animal_suggestionController extends Controller {
         Animal_suggestion::create($request_data);
         return redirect()->route(""); // página de listagem de sugestões
     }
-    public function show(string $id) {
+    public function edit($gbif_id) {
+        $suggestion = Animal_suggestion::where("gbif_id", $gbif_id)->first();
+        return [
+            "suggestion" => $suggestion,
+        ];
     }
-    public function edit(string $id) {
-    }
-    public function update(Request $request, string $id) {
+    public function update(Animal_suggestionRequest $request) {
+        $request_data = $request->validated();
+        $suggestion = Animal_suggestion::find($request_data["id"]);
+        $suggestion->update($request_data);
+        return []; ///página de listagem de sugestões
     }
     public function destroy(Animal_suggestion $animal_suggestion) {
         $animal_suggestion->delete();

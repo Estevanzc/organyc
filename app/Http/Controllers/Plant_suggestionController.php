@@ -22,11 +22,17 @@ class Plant_suggestionController extends Controller {
         Plant_suggestion::create($request_data);
         return redirect()->route("");
     }
-    public function show(string $id) {
+    public function edit($gbif_id, $is_plant) {
+        $suggestion = Plant_suggestion::where("gbif_id", $gbif_id)->first();
+        return [
+            "suggestion" => $suggestion,
+        ];
     }
-    public function edit(string $id) {
-    }
-    public function update(Request $request) {
+    public function update(Plant_suggestionRequest $request) {
+        $request_data = $request->validated();
+        $suggestion = Plant_suggestion::find($request_data["id"]);
+        $suggestion->update($request_data);
+        return []; ///página de listagem de sugestões
     }
     public function destroy(Plant_suggestion $plant_suggestion) {
         $plant_suggestion->delete();

@@ -15,11 +15,13 @@ Route::prefix("/creatures")->group(function() {
     Route::prefix("/plants")->group(function() {
         Route::prefix("/suggestion")->group(function() {
             Route::get("/create/{gbif_id}/{is_plant?}", [Plant_suggestionController::class, "create"])->name("plant.suggestion.create");
+            Route::get("/edit/{gbif_id}", [Plant_suggestionController::class, "edit"])->name("plant.suggestion.edit");
         });
     });
     Route::prefix("/animals")->group(function() {
         Route::prefix("/suggestion")->group(function() {
             Route::get("/create/{gbif_id}/{is_plant?}", [Animal_suggestionController::class, "create"])->name("animal.suggestion.create");
+            Route::get("/edit/{gbif_id}", [Animal_suggestionController::class, "edit"])->name("animal.suggestion.edit");
         });
     });
 });

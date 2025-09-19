@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Clas extends Model {
     use HasFactory;
+    protected $table = 'classes';
     protected $fillable = [
         "name",
         "phylum_id",

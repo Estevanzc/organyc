@@ -2,7 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Clas;
+use App\Models\Genu;
+use App\Models\Order;
+use App\Models\Family;
+use App\Models\Phylum;
+use App\Models\Specie;
+use App\Models\Kingdom;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 abstract class Controller {
     public function api_fetcher($search_value, $search_type = 0, $is_id = false) {
@@ -98,5 +107,51 @@ abstract class Controller {
             $form_data["conservation_status"] = $convervation_codes[$conservation_data["code"]];
         }
         return $is_plant ? $form_data : [$form_data, $common_names, $common_name, $gbif_data];
+    }
+    public function image_download($link) {
+        $file = Http::get($link);
+        $extension = pathinfo(parse_url($link, PHP_URL_PATH), PATHINFO_EXTENSION) ?: 'jpg';
+        $filename = Str::uuid() . '.' . $extension;
+        Storage::disk('public')->put("images/{$filename}", $file->body());
+        return "images/{$filename}";
+    }
+    public function taxon_creater($taxon) {
+        /*
+        $taxon = [
+            "kingdom" => "Animalia",
+            "phylum" => "Chordata",
+            "class" => "Mammalia",
+            "order" => "Rodentia",
+            "family" => "Caviidae",
+            "genu" => "Cavia",
+            "specie" => "Cavia porcellus",
+        ];
+        */
+        $taxon_table = [
+            "kingdom" => Kingdom::class,
+            "phylum" => Phylum::class,
+            "class" => Clas::class,
+            "order" => Order::class,
+            "family" => Family::class,
+            "genu" => Genu::class,
+            "specie" => Specie::class,
+        ];
+        $past_level = [];
+        foreach ($taxon as $level => $value) {
+            $model = $taxon_table[$level];
+            $taxon_level = $model::where("name", $value)->first();
+            if (empty($taxon_level)) {
+                $fields = [
+                    "name" => $value,
+                ];
+                if (!empty($past_level)) {
+                    $fields[($past_level[1]."_id")] = $past_level[0]["id"];
+                }
+                $past_level = [$model::create($fields)->toArray(), $level];
+            } else {
+                $past_level = [$taxon_level->toArray(), $level];
+            }
+        }
+        return $past_level[0]["id"];
     }
 }
