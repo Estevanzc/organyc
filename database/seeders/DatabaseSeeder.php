@@ -19,5 +19,9 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+        $this->call([
+            Animal_suggestionSeeder::class,
+            Plant_suggestionSeeder::class,
+        ]);
     }
 }

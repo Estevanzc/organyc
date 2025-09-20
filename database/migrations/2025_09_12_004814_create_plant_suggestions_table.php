@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string("locale");
             $table->string("habitat");
             $table->enum("diet", ["Autotroph","Carnivorous","Parasitic","Saprophytic","Mycoheterotroph","Hemiparasite","Other"])->default("Other");
-            $table->decimal("life_span", 2,1);
+            $table->string("life_span");
             $table->decimal("growth_time", 2,1);
             $table->string("color")->nullable();
             $table->enum("toxicity_level", ["Non-toxic", "Mildly toxic", "Moderately toxic", "Highly toxic", "Lethal"])->default("Non-toxic");
