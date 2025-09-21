@@ -4,6 +4,7 @@ use App\Http\Controllers\Animal_suggestionController;
 use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\CreatureController;
 use App\Http\Controllers\Plant_suggestionController;
+use App\Http\Controllers\PlantController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -14,6 +15,7 @@ Route::prefix("/creatures")->group(function() {
     Route::get("/view/{gbif_id}/{is_plant?}", [CreatureController::class, "view"])->name("creature.view");
     Route::get("/create/{gbif_id}/{is_plant?}", [CreatureController::class, "create"])->name("creature.create");
     Route::prefix("/plants")->group(function() {
+        Route::get("/store", [PlantController::class, "store"])->name("plant.store");
         Route::prefix("/suggestion")->group(function() {
             Route::get("/create/{gbif_id}/{is_plant?}", [Plant_suggestionController::class, "create"])->name("plant.suggestion.create");
             Route::get("/edit/{gbif_id}", [Plant_suggestionController::class, "edit"])->name("plant.suggestion.edit");

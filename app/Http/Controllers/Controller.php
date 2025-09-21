@@ -109,7 +109,9 @@ abstract class Controller {
         return $is_plant ? $form_data : [$form_data, $common_names, $common_name, $gbif_data];
     }
     public function image_download($link) {
-        $file = Http::get($link);
+        $file = Http::withOptions([
+            'verify' => storage_path('app/cacert.pem'),
+        ])->get($link);
         $extension = pathinfo(parse_url($link, PHP_URL_PATH), PATHINFO_EXTENSION) ?: 'jpg';
         $filename = Str::uuid() . '.' . $extension;
         Storage::disk('public')->put("images/{$filename}", $file->body());

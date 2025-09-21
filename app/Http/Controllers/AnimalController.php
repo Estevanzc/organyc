@@ -14,36 +14,8 @@ class AnimalController extends Controller {
     }
     public function create() {
     }
-    public function store(Request $request) {
-        //$request_data = $request->validated();
-        $request_data = [
-            "id" => 1,
-            'common_name' => 'African Elephant',
-            'conservation_status' => 'Endangered',
-            'weight' => '6000 kg',
-            'height' => '3.3 m',
-            'length' => '6 m',
-            'locale' => 'Sub-Saharan Africa',
-            'habitat' => 'Savannas, forests, deserts, and marshes',
-            'diet' => 'Herbivore',
-            'reproduction' => 'Sexual',
-            'life_span' => '60-70 years',
-            'color' => 'Gray',
-            'danger_level' => 'Dangerous',
-            'treatment_necessity' => 'Urgent',
-            'prevention' => 'Maintain safe distance, avoid provoking',
-            'description' => 'The African elephant is the largest land animal on Earth.',
-            'inaturalist_id' => 43662,
-            'gbif_id' => 2440946,
-            'photo' => 'https://inaturalist-open-data.s3.amazonaws.com/photos/20539855/medium.jpg',
-            'kingdom' => 'Animalia',
-            'phylum' => 'Chordata',
-            'class' => 'Mammalia',
-            'order' => 'Proboscidea',
-            'family' => 'Elephantidae',
-            'genus' => 'Loxodonta',
-            'species' => 'Loxodonta africana',
-        ];
+    public function store(Animal_suggestionRequest $request) {
+        $request_data = $request->validated();
         $suggestion = Animal_suggestion::find($request_data["id"]);
         $specie_id = $this->taxon_creater([
             "kingdom" => $request_data['kingdom'],
@@ -51,29 +23,29 @@ class AnimalController extends Controller {
             "class" => $request_data['class'],
             "order" => $request_data['order'],
             "family" => $request_data['family'],
-            "genu" => $request_data['genus'],
-            "specie" => $request_data['species'],
+            "genu" => $request_data['genu'],
+            "specie" => $request_data['specie'],
         ]);
         $photo_name = $this->image_download($suggestion->photo);
         dd();
         $animal = Animal::create([
-            'common_name' => 'African Elephant',
-            'conservation_status' => 'Endangered',
-            'weight' => '6000 kg',
-            'height' => '3.3 m',
-            'length' => '6 m',
-            'locale' => 'Sub-Saharan Africa',
-            'habitat' => 'Savannas, forests, deserts, and marshes',
-            'diet' => 'Herbivore',
-            'reproduction' => 'Sexual',
-            'life_span' => '60-70 years',
-            'color' => 'Gray',
-            'danger_level' => 'Dangerous',
-            'treatment_necessity' => 'Urgent',
-            'prevention' => 'Maintain safe distance, avoid provoking',
-            'description' => 'The African elephant is the largest land animal on Earth.',
-            'inaturalist_id' => 43662,
-            'gbif_id' => 2440946,
+            'common_name' => $request_data["common_name"],
+            'conservation_status' => $request_data["conservation_status"],
+            'weight' => $request_data["weight"],
+            'height' => $request_data["height"],
+            'length' => $request_data["length"],
+            'locale' => $request_data["locale"],
+            'habitat' => $request_data["habitat"],
+            'diet' => $request_data["diet"],
+            'reproduction' => $request_data["reproduction"],
+            'life_span' => $request_data["life_span"],
+            'color' => $request_data["color"],
+            'danger_level' => $request_data["danger_level"],
+            'treatment_necessity' => $request_data["treatment_necessity"],
+            'prevention' => $request_data["prevention"],
+            'description' => $request_data["description"],
+            'inaturalist_id' => $request_data["inaturalist_id"],
+            'gbif_id' => $request_data["gbif_id"],
             'specie_id' => $specie_id,
         ]);
         Animal_photo::create([
