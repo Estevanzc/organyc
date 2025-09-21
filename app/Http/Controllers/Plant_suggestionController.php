@@ -22,7 +22,7 @@ class Plant_suggestionController extends Controller {
         Plant_suggestion::create($request_data);
         return redirect()->route("");
     }
-    public function edit($gbif_id, $is_plant) {
+    public function edit($gbif_id) {
         $suggestion = Plant_suggestion::where("gbif_id", $gbif_id)->first();
         return [
             "suggestion" => $suggestion,

@@ -13,8 +13,10 @@ class UserController extends Controller {
     public function index() {
     }
     public function logon() {
+        return;
     }
     public function login() {
+        return;
     }
     public function auth_login(Request $request) {
         $request_data = $request->validate([
@@ -39,6 +41,11 @@ class UserController extends Controller {
         if (Auth::attempt(["email" => $request_data["email"], "password" => $request_data["password"]])) {
             $request->session()->regenerate();
         }
+        if (session("intended")) {
+            $redirect_info = session("intended");
+            session()->forget("intended");
+            return redirect()->route($redirect_info[0], $redirect_info[1]);
+        }
         return redirect()->route("index");
     }
     public function auth_logon(Request $request) {
@@ -49,6 +56,11 @@ class UserController extends Controller {
         ]);
         $user = User::create($request_data);
         Auth::login($user);
+        if (session("intended")) {
+            $redirect_info = session("intended");
+            session()->forget("intended");
+            return redirect()->route($redirect_info[0], $redirect_info[1]);
+        }
         return redirect()->route("index");
     }
     public function show(string $id) {
