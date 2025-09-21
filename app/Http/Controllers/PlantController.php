@@ -15,43 +15,8 @@ class PlantController extends Controller {
     }
     public function create() {
     }
-    public function store(Request $request) {
-        // $request_data = $request->validated();
-        $request_data = [
-            "id" => 1,
-            'common_name' => 'Sunflower',
-            'conservation_status' => 'Least Concern',
-            'type' => 'Herb',
-            'growth_form' => 'Annual',
-            'leaf_type' => 'Simple',
-            'leaf_arrangement' => 'Alternate',
-            'fruit_type' => 'Achene',
-            'root_type' => 'Taproot',
-            'soil' => 'Loamy',
-            'sunlight' => 'Full Sun',
-            'water' => 'Medium',
-            'reproduction' => 'Sexual',
-            'height' => 3.0,
-            'locale' => 'North America',
-            'habitat' => 'Fields and grasslands',
-            'diet' => 'Autotroph',
-            'life_span' => 1.0,
-            'growth_time' => 0.5,
-            'color' => 'Yellow petals with brown center',
-            'toxicity_level' => 'Non-toxic',
-            'treatment_necessity' => 'None',
-            'description' => 'Sunflowers are large, bright flowers known for tracking the sun.',
-            'inaturalist_id' => 49219,
-            'gbif_id' => 3117424,
-            'photo' => 'https://upload.wikimedia.org/wikipedia/commons/4/40/Sunflower_sky_backdrop.jpg',
-            'kingdom' => 'Plantae',
-            'phylum' => 'Magnoliophyta',
-            'class' => 'Magnoliopsida',
-            'order' => 'Asterales',
-            'family' => 'Asteraceae',
-            'genu' => 'Helianthus',
-            'specie' => 'Helianthus annuus',
-        ];
+    public function store(Plant_suggestionRequest $request) {
+        $request_data = $request->validated();
         $suggestion = Plant_suggestion::find($request_data["id"]);
         if (empty($suggestion)) {
             return; //redirect to home with errors

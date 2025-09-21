@@ -17,6 +17,9 @@ class AnimalController extends Controller {
     public function store(Animal_suggestionRequest $request) {
         $request_data = $request->validated();
         $suggestion = Animal_suggestion::find($request_data["id"]);
+        if (empty($suggestion)) {
+            return; //redirect to home with errors
+        }
         $specie_id = $this->taxon_creater([
             "kingdom" => $request_data['kingdom'],
             "phylum" => $request_data['phylum'],
@@ -27,7 +30,6 @@ class AnimalController extends Controller {
             "specie" => $request_data['specie'],
         ]);
         $photo_name = $this->image_download($suggestion->photo);
-        dd();
         $animal = Animal::create([
             'common_name' => $request_data["common_name"],
             'conservation_status' => $request_data["conservation_status"],
@@ -53,7 +55,9 @@ class AnimalController extends Controller {
             "animal_id" => $animal->id,
         ]);
         $suggestion->delete();
-        dd($animal);
+        return [
+            "animal" => $animal,// return the page of the animal
+        ];
     }
     public function show(string $id) {
     }
