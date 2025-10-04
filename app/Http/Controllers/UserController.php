@@ -88,7 +88,8 @@ class UserController extends Controller {
             "name" => (string) Str::uuid(),
             "user_id" => $user->id,
         ]);
-        Mail::to($user->email)->send(new PasswordRecover($user, route("user.password.reseter", $token->name))); 
+        Mail::to($user->email)->send(new PasswordRecover($user, route("user.password.reseter", $token->name)));
+        return; //return the page with warning or just a notification of it
     }
     public function password_reseter($token) {
         $token = Password_token::where("name", $token)->first();
