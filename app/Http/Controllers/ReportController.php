@@ -10,6 +10,9 @@ use App\Models\Plant_report;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller {
+    public function index() {
+        $animal_report = Animal_report::all();
+    }
     public function create($is_plant, $creature_id) {
         $creature = ([[Plant::class, "plant"], [Animal::class, "animal"]][$is_plant])::find($creature_id);
         return [
