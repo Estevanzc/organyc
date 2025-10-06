@@ -34,7 +34,7 @@ Route::prefix("/creatures")->group(function() {
 Route::get("/login", [UserController::class, "login"])->name("login");
 Route::get("/logon", [UserController::class, "logon"])->name("logon");
 Route::prefix("/user")->group(function() {
-    Route::get("/password/recover/{user}", [UserController::class, "password_recover"])->name("user.password.recover");
+    Route::get("/password/recover/{email}", [UserController::class, "password_recover"])->name("user.password.recover");
     Route::get("/password/reseter/{token}", [UserController::class, "password_reseter"])->name("user.password.reseter");
     Route::post("/password/update", [UserController::class, "password_update"])->name("user.password.update");
     Route::post("/login", [UserController::class, "auth_login"])->name("auth.login");

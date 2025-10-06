@@ -4,11 +4,12 @@ namespace App\Mail;
 
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class PasswordRecover extends Mailable
 {
@@ -21,9 +22,11 @@ class PasswordRecover extends Mailable
      */
     public $user;
     public $reset_url;
+    public $logo;
     public function __construct(User $user, $reset_url) {
         $this->user = $user;
         $this->reset_url = $reset_url;
+        $this->logo = Vite::asset('resources/assets/horizontal_green.png');
     }
 
     /**
