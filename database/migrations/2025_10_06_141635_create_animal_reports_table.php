@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reports', function (Blueprint $table) {
+        Schema::create('animal_reports', function (Blueprint $table) {
             $table->id();
-            $table->enum("table_name", ["animals", "plants"]);
-            $table->integer("table_id");
             $table->text("description");
+            $table->foreignId("animal_id")->constrained()->onDelete("cascade");
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reports');
+        Schema::dropIfExists('animal_reports');
     }
 };

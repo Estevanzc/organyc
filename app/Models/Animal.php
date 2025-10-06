@@ -38,4 +38,7 @@ class Animal extends Model {
     public function animal_activities(): HasMany {
         return $this->hasMany(Animal_activity::class);
     }
+    public function animal_report(): HasMany {
+        return $this->hasMany(Animal_report::class);
+    }
 }

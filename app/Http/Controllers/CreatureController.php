@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Animal_activity;
+use App\Models\Animal_report;
 use App\Models\Clas;
 use App\Models\Genu;
 use App\Models\Order;
@@ -12,6 +13,7 @@ use App\Models\Domain;
 use App\Models\Family;
 use App\Models\Phylum;
 use App\Models\Plant_activity;
+use App\Models\Plant_report;
 use App\Models\Specie;
 use App\Models\Kingdom;
 use Illuminate\Support\Str;

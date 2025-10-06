@@ -45,4 +45,7 @@ class Plant extends Model {
     public function plant_activities(): HasMany {
         return $this->hasMany(Plant_activity::class);
     }
+    public function plant_report(): HasMany {
+        return $this->hasMany(Plant_report::class);
+    }
 }
