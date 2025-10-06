@@ -50,4 +50,13 @@ class User extends Authenticatable
     public function tokens(): HasMany {
         return $this->hasMany(Password_token::class);
     }
+    public function searches(): HasMany {
+        return $this->hasMany(Search::class);
+    }
+    public function animal_activities(): HasMany {
+        return $this->hasMany(Animal_activity::class);
+    }
+    public function plant_acitivities(): HasMany {
+        return $this->hasMany(Plant_activity::class);
+    }
 }

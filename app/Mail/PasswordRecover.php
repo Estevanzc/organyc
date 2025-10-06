@@ -22,11 +22,9 @@ class PasswordRecover extends Mailable
      */
     public $user;
     public $reset_url;
-    public $logo;
     public function __construct(User $user, $reset_url) {
         $this->user = $user;
         $this->reset_url = $reset_url;
-        $this->logo = Vite::asset('resources/assets/horizontal_green.png');
     }
 
     /**

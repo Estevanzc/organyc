@@ -42,4 +42,7 @@ class Plant extends Model {
     public function specie(): BelongsTo {
         return $this->belongsTo(Specie::class);
     }
+    public function plant_activities(): HasMany {
+        return $this->hasMany(Plant_activity::class);
+    }
 }

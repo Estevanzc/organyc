@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Animal_activity;
 use App\Models\Clas;
 use App\Models\Genu;
 use App\Models\Order;
@@ -10,6 +11,7 @@ use App\Models\Animal;
 use App\Models\Domain;
 use App\Models\Family;
 use App\Models\Phylum;
+use App\Models\Plant_activity;
 use App\Models\Specie;
 use App\Models\Kingdom;
 use Illuminate\Support\Str;
@@ -96,11 +98,18 @@ class CreatureController extends Controller {
     }
     public function view($gbif_id, $is_plant = 0) {
         $creature = ([Animal::class, Plant::class][$is_plant])::where("gbif_id", $gbif_id)->first();
+        $creature_activity = [[Animal_activity::class, "animal"], [Plant_activity::class, "plant"]][$is_plant];
         $is_plant = $is_plant == 1 ? true : false;
         if (empty($creature)) {
             return redirect()->route("creature.create", [
                 "gbif_id" => $gbif_id,
                 "is_plant" => $is_plant ? 1 : 0,
+            ]);
+        }
+        if (Auth::check()) {
+            $creature_activity[0]::create([
+                "$creature_activity[1]_id" => $creature->id,
+                "user_id" => Auth::user()->id,
             ]);
         }
         return [//verificar se é planta ou animal para retornar a página correta

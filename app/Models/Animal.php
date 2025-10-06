@@ -35,4 +35,7 @@ class Animal extends Model {
     public function specie(): BelongsTo {
         return $this->belongsTo(Specie::class);
     }
+    public function animal_activities(): HasMany {
+        return $this->hasMany(Animal_activity::class);
+    }
 }
