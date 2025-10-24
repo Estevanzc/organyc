@@ -25,7 +25,7 @@ class UserController extends Controller {
         return;
     }
     public function login() {
-        return;
+        return ;
     }
     public function auth_login(Request $request) {
         $request_data = $request->validate([
