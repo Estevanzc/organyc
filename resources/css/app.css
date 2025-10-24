@@ -184,7 +184,7 @@ html,
         @apply bg-slate-100;
     }
 
-    .neu-input-float input[type=text].input {
+    .neu-input-float input[type=text].input, .neu-input-float input[type=email].input, .neu-input-float input[type=password].input {
         padding: 11px 10px;
         font-size: 0.75rem;
         border: 2px solid;
@@ -193,23 +193,10 @@ html,
         background: transparent;
     }
 
-    .neu-input-float input[type=text].input:focus {
+    .neu-input-float input[type=text].input:focus, .neu-input-float input[type=email].input:focus, .neu-input-float input[type=password].input:focus {
         outline: none;
     }
     
-    .neu-input-float input[type=password].input {
-        padding: 11px 10px;
-        font-size: 0.75rem;
-        border: 2px solid;
-        border-color: #a4dd00;
-        border-radius: 5px;
-        background: transparent;
-    }
-
-    .neu-input-float input[type=password].input:focus {
-        outline: none;
-    }
-
     /* ================[ UIVERSE CUSTOM ELEMENTS ]================ */
 
     .neu-btn {

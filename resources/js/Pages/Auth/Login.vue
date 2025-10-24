@@ -116,13 +116,13 @@
 
 <script setup>
 import GuestLayout from '../../Layouts/GuestLayout.vue';
-import CustomDiv from '../../../Components/CustomDiv.vue';
+import CustomDiv from '../../Components/CustomDiv.vue';
 import leaf1 from '../../../assets/plant1.svg';
 import leaf2 from '../../../assets/plant2.svg';
 import leaf3 from '../../../assets/plant3.svg';
 import leaf6 from '../../../assets/plant6.svg';
 import leaf8 from '../../../assets/plant8.svg';
-import ParticleLeaf from '../../../Components/ParticleLeaf.vue';
+import ParticleLeaf from '../../Components/ParticleLeaf.vue';
 
 import { ref, onMounted } from 'vue';
 const canvasWidth = ref(1920);
