@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('animals', function (Blueprint $table) {
             $table->id();
-            $table->string("common_name");
-            $table->enum("conservation_status", ["N/A", "Extinct", "Extinct in the Wild", "Critically Endangered", "Endangered", "Vulnerable", "Near Threatened", "Least Concern", "Data Deficient", "Not Evaluated"])->default("N/A");
+            $table->string("common_name"); // Filter
+            $table->enum("conservation_status", ["N/A", "Extinct", "Extinct in the Wild", "Critically Endangered", "Endangered", "Vulnerable", "Near Threatened", "Least Concern", "Data Deficient", "Not Evaluated"])->default("N/A"); // Filter
             $table->string("weight");
             $table->string("height");
             $table->string("length");
             $table->string("locale");
-            $table->string("habitat");
-            $table->enum("diet", ["Herbivore","Carnivore","Omnivore","Insectivore","Frugivore","Folivore","Nectarivore","Piscivore","Detritivore","Scavenger","Other"]);
+            $table->string("habitat"); // Filter
+            $table->enum("diet", ["Herbivore","Carnivore","Omnivore","Insectivore","Frugivore","Folivore","Nectarivore","Piscivore","Detritivore","Scavenger","Other"]); // Filter
             $table->enum("reproduction", ['Sexual','Asexual','Sexual and Asexual']);
             $table->string("life_span");
             $table->string("color");
