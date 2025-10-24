@@ -9,3 +9,257 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+:root {
+    --green-1: #b6f500;
+    --green-2: #a4dd00;
+    --green-3: #98cd00;
+    --beige-1: #FFFADC;
+}
+
+body,
+html,
+#app {
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+}
+
+@keyframes wind {
+    from {
+        transform: rotate(-3deg) rotateY(15deg);
+    }
+
+    to {
+        transform: rotate(3deg) rotateY(10deg);
+    }
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(-10px);
+    }
+
+    20% {
+        transform: translateX(10px)
+    }
+
+    40% {
+        transform: translateX(-14px)
+    }
+
+    60% {
+        transform: translateX(14px)
+    }
+
+    80% {
+        transform: translate(-10px);
+    }
+
+    100% {
+        transform: translateX(14px);
+    }
+}
+
+@layer utilities {
+    .std-glass {
+        @apply text-slate-50;
+        text-shadow: 0 7px 15px rgba(0, 0, 0, 0.65);
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.75) 0%,
+                rgba(255, 255, 255, 0.65) 55%,
+                rgba(255, 255, 255, 0.25) 100%);
+        border-color: rgba(255, 255, 255, 1);
+        border-right-color: rgba(255, 255, 255, 0.65);
+        border-bottom-color: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(4px);
+    }
+
+    .std-glass label {
+        @apply text-lg text-slate-50;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.75);
+    }
+
+    .std-glass input {
+        @apply h-10 p-2 text-xl outline-none;
+    }
+
+    .neu-btn-flat {
+        @apply bg-lime-400 rounded-lg;
+        position: relative;
+        padding: .75rem;
+        color: #fff;
+        box-shadow: -5px 5px 0 1.5px #84cc16;
+        transform: translate(5px, -5px);
+        z-index: 10;
+        transition: all .1s ease-in;
+    }
+
+    .neu-btn-flat:active {
+        @apply bg-lime-300;
+        box-shadow: none;
+        transform: translate(-5px, 5px);
+    }
+
+    .neu-btn-flat:active::after {
+        box-shadow: none;
+    }
+
+    .neu-btn-flat::after {
+        @apply rounded-lg;
+        content: '';
+        position: absolute;
+        inset: 0;
+        box-shadow: -7px 7px 10px 7px rgba(0, 0, 0, 0.2);
+        z-index: -10;
+    }
+
+    .neu-input-out {
+        position: relative;
+        box-shadow: -5px -5px 10px rgba(255, 255, 255, 0.8),
+            5px 5px 10px rgba(0, 0, 0, 0.2);
+        border-radius: .5rem;
+        z-index: 0;
+    }
+
+    .neu-input-out::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        padding: .15rem;
+        border-radius: inherit;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%,
+                rgba(255, 255, 255, 0.35) 55%,
+                rgba(255, 255, 255, 0.25) 70%,
+                rgba(0, 0, 0, 0.07) 100%);
+        -webkit-mask:
+            linear-gradient(#fff 0 0) content-box,
+            linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        z-index: -1;
+    }
+
+    .neu-input-in {
+        position: relative;
+        border-radius: .5rem;
+        box-shadow: 0px 0px 60px -6px rgba(0, 0, 0, 0.15) inset,
+            rgba(0, 0, 0, 0.2) 5px 15px 32px -10px inset,
+            0 0 5px 7px rgba(255, 255, 255, 0.3),
+            -5px -2px 35px 0px rgba(255, 255, 255, 0.45);
+        z-index: 0;
+    }
+
+    .neu-input-in::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        padding: .15rem;
+        border-radius: inherit;
+        background: linear-gradient(270deg, rgba(255, 255, 255, 0.7) 0%,
+                rgba(255, 255, 255, 0.5) 55%,
+                rgba(255, 255, 255, 0.35) 100%);
+        -webkit-mask:
+            linear-gradient(#fff 0 0) content-box,
+            linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        z-index: -1;
+    }
+
+    .neu-input-float {
+        display: flex;
+        flex-direction: column;
+        position: static;
+    }
+
+    .neu-input-float label.text {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #a4dd00;
+        position: relative;
+        top: 1rem;
+        margin: 0 0 0 20px;
+        padding: 0 3px;
+        width: fit-content;
+        @apply bg-slate-100;
+    }
+
+    .neu-input-float input[type=text].input {
+        padding: 11px 10px;
+        font-size: 0.75rem;
+        border: 2px solid;
+        border-color: #a4dd00;
+        border-radius: 5px;
+        background: transparent;
+    }
+
+    .neu-input-float input[type=text].input:focus {
+        outline: none;
+    }
+    
+    .neu-input-float input[type=password].input {
+        padding: 11px 10px;
+        font-size: 0.75rem;
+        border: 2px solid;
+        border-color: #a4dd00;
+        border-radius: 5px;
+        background: transparent;
+    }
+
+    .neu-input-float input[type=password].input:focus {
+        outline: none;
+    }
+
+    /* ================[ UIVERSE CUSTOM ELEMENTS ]================ */
+
+    .neu-btn {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.2) 100%);
+        border: 0;
+        color: rgba(0, 0, 0, 0.15);
+        border-radius: 0.5em;
+        padding: 0.375em 1em;
+        text-shadow: 0 0.0625em 0 rgba(255, 255, 255, 0.6);
+        box-shadow:
+            inset 0 0.0625em 0 0 rgba(255, 255, 255, 0.6),
+            0 0.0625em 0 0 rgba(255, 255, 255, 0.55),
+            0 0.125em 0 0 rgba(255, 255, 255, 0.5),
+            0 0.25em 0 0 rgba(255, 255, 255, 0.45),
+            0 0.3125em 0 0 rgba(255, 255, 255, 0.4),
+            0 0.375em 0 0 rgba(255, 255, 255, 0.35),
+            0 0.425em 0 0 rgba(0, 0, 0, 0.2),
+            0 0.425em 0.5em 0 rgba(0, 0, 0, 0.15),
+            0 0.625rem 0.95rem 0.2rem rgba(0, 0, 0, 0.3);
+        transition: 0.15s ease;
+        cursor: pointer;
+    }
+
+    .neu-btn:active {
+        translate: 0 0.225em;
+        box-shadow:
+            inset 0 0.03em 0 0 rgba(255, 255, 255, 0.6),
+            0 0.03em 0 0 rgba(255, 255, 255, 0.55),
+            0 0.0625em 0 0 rgba(255, 255, 255, 0.5),
+            0 0.125em 0 0 rgba(255, 255, 255, 0.45),
+            0 0.125em 0 0 rgba(255, 255, 255, 0.4),
+            0 0.2em 0 0 rgba(255, 255, 255, 0.35),
+            0 0.225em 0 0 rgba(0, 0, 0, 0.2),
+            0 0.225em 0.375em 0 rgba(0, 0, 0, 0.15);
+    }
+
+    /* ================[ CUSTOM ANIMATIONS ]================ */
+
+    .paused {
+        animation-play-state: paused !important;
+    }
+
+    .animate-wind {
+        transform-origin: bottom center;
+        animation: wind 2.5s ease-in-out infinite alternate;
+    }
+
+    .animate-shake {
+        transform-origin: bottom center;
+        animation: shake .5s infinite alternate;
+    }
+
+}
