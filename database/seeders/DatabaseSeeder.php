@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
             SpecieSeeder::class,
             AnimalSeeder::class,
             PlantSeeder::class,
+            Daily_creatureSeeder::class,
         ]);
     }
 }
