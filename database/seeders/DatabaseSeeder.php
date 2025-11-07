@@ -23,6 +23,15 @@ class DatabaseSeeder extends Seeder
         $this->call([
             Animal_suggestionSeeder::class,
             Plant_suggestionSeeder::class,
+            KingdomSeeder::class,
+            PhylumSeeder::class,
+            ClassSeeder::class,
+            OrderSeeder::class,
+            FamilySeeder::class,
+            GenuSeeder::class,
+            SpecieSeeder::class,
+            AnimalSeeder::class,
+            PlantSeeder::class,
         ]);
     }
 }

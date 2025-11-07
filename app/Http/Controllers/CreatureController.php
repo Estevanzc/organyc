@@ -123,4 +123,6 @@ class CreatureController extends Controller {
         $creature = ([Plant_suggestion::class, Animal_suggestion::class][$is_plant ? 0 : 1])::where("gbif_id", $gbif_id)->first();
         return redirect()->route((($is_plant ? "plant" : "animal").".suggestion.".(empty($creature) ? "create" : "edit")), [$gbif_id, ($is_plant ? 1 : 0)]);
     }
+    public function index() {
+    }
 }

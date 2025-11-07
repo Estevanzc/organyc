@@ -5,6 +5,7 @@ use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\CreatureController;
 use App\Http\Controllers\Plant_suggestionController;
 use App\Http\Controllers\PlantController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\LoginVerify;
 use Illuminate\Support\Facades\Route;
@@ -49,5 +50,9 @@ Route::prefix("/creatures")->group(function () {
 //     Route::post("/logon", [UserController::class, "auth_logon"])->name("auth.logon");
 // });
 
-Route::post("/test", [CreatureController::class, "recognizer"])->name("api_test");
+Route::prefix("/test")->group(function () {
+    Route::post("/", [CreatureController::class, "recognizer"])->name("api_test");
+    Route::get("/taxon/{taxon?}", [TestController::class, "taxon_creater"])->name("taxon_test");
+});
+
 Route::get("/api/{search_value}/{search_type?}/{is_id?}", [CreatureController::class, "api_fetcher"])->name("gbif_api");

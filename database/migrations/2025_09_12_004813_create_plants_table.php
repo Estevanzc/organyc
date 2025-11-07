@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string("habitat"); // Filter
             $table->enum("diet", ["Autotroph","Carnivorous","Parasitic","Saprophytic","Mycoheterotroph","Hemiparasite","Other"]);
             $table->string("life_span");
-            $table->decimal("growth_time", 2,1);
+            $table->decimal("growth_time", 4,1);
             $table->string("color"); // Filter
             $table->enum("toxicity_level", ["Non-toxic", "Mildly toxic", "Moderately toxic", "Highly toxic", "Lethal"])->default("Non-toxic");
             $table->enum("treatment_necessity", ['None','Self-care','Recommended','Urgent','Critical'])->default("None");
