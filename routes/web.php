@@ -26,6 +26,8 @@ Route::prefix("/creatures")->group(function () {
     Route::get("/view/{gbif_id}/{is_plant?}", [CreatureController::class, "view"])->name("creature.view");
     Route::get("/create/{gbif_id}/{is_plant?}", [CreatureController::class, "create"])->name("creature.create");
     Route::prefix("/plants")->group(function () {
+        Route::get("/catalogue", [PlantController::class, "index"])->name("plant.index");
+        Route::get("/filter/{filter?}", [PlantController::class, "filter"])->name("plant.filter"); //the filter value can be null, in this case, it just returns every item in the database. Always paginated
         Route::put("/store", [PlantController::class, "store"])->name("plant.store");
         Route::prefix("/suggestion")->group(function () {
             Route::get("/create/{gbif_id}/{is_plant?}", [Plant_suggestionController::class, "create"])->name("plant.suggestion.create");
@@ -33,6 +35,7 @@ Route::prefix("/creatures")->group(function () {
         });
     });
     Route::prefix("/animals")->group(function () {
+        Route::get("/filter/{filter?}", [AnimalController::class, "filter"])->name("animal.filter"); //the filter value can be null, in this case, it just returns every item in the database. Always paginated
         Route::put("/store", [AnimalController::class, "store"])->name("animal.store");
         Route::prefix("/suggestion")->group(function () {
             Route::get("/create/{gbif_id}/{is_plant?}", [Animal_suggestionController::class, "create"])->name("animal.suggestion.create");

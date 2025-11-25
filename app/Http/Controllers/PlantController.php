@@ -11,7 +11,35 @@ use App\Models\Plant_suggestion;
 use Illuminate\Http\Request;
 
 class PlantController extends Controller {
-    public function index() {
+    public function filter($filter = []) {
+        $plants = Plant::query();
+        if (!empty($filter)) {
+            $plants->where(function ($query) use ($filter) {
+                foreach ($filter as $filter_name => $filter_item) {
+                    if (!empty($filter_item)) {
+                        $query->orWhere($filter_name, 'like', "%".$filter_item."%");
+                    }
+                }
+                /*
+                expecting this values as filter:
+                
+                common_name
+                conservation_status
+                type
+                leaf_type
+                habitat
+                color
+                */
+            });
+        }
+        $plants = $plants->paginate(20);
+        return $plants;
+    }
+    public function index($filter = []) {
+        $plants = $this->filter($filter);
+        return [ //return the plants catalogue
+            "plants" => $plants,
+        ];
     }
     public function create() {
     }

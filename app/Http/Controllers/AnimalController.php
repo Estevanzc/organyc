@@ -10,7 +10,33 @@ use App\Models\Animal_suggestion;
 use Illuminate\Http\Request;
 
 class AnimalController extends Controller {
-    public function index() {
+    public function filter($filter = []) {
+        $animals = Animal::query();
+        if (!empty($filter)) {
+            $animals->where(function ($query) use ($filter) {
+                foreach ($filter as $filter_name => $filter_item) {
+                    if (!empty($filter_item)) {
+                        $query->orWhere($filter_name, 'like', "%".$filter_item."%");
+                    }
+                }
+                /*
+                expecting this values as filter:
+                
+                common_name
+                conservation_status
+                habitat
+                diet
+                */
+            });
+        }
+        $animals = $animals->paginate(20);
+        return $animals;
+    }
+    public function index($filter = []) {
+        $animals = $this->filter($filter);
+        return [ //return the animals catalogue
+            "animals" => $animals,
+        ];
     }
     public function create() {
     }
