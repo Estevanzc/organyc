@@ -26,6 +26,7 @@ Route::prefix("/creatures")->group(function () {
     Route::get("/view/{gbif_id}/{is_plant?}", [CreatureController::class, "view"])->name("creature.view");
     Route::get("/create/{gbif_id}/{is_plant?}", [CreatureController::class, "create"])->name("creature.create");
     Route::prefix("/plants")->group(function () {
+        Route::get("/view/{plant}", [PlantController::class, "view"])->name("plant.view");
         Route::get("/catalogue", [PlantController::class, "index"])->name("plant.index");
         Route::get("/filter/{filter?}", [PlantController::class, "filter"])->name("plant.filter"); //the filter value can be null, in this case, it just returns every item in the database. Always paginated
         Route::put("/store", [PlantController::class, "store"])->name("plant.store");

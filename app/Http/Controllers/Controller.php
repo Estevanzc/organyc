@@ -14,6 +14,37 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
 abstract class Controller {
+    public function taxon_builder($specie_id) {
+        $taxons = [
+            "specie",
+            "genu",
+            "family",
+            "order",
+            "class",
+            "phylum",
+            "kingdom",
+        ];
+        $classes = [
+            Specie::class,
+            Genu::class,
+            Family::class,
+            Order::class,
+            Clas::class,
+            Phylum::class,
+            Kingdom::class,
+        ];
+        $taxon = [];
+        $current_level = Specie::find($specie_id);
+        for ($idx = 0; $idx <= count($taxons); $idx ++) {
+            $taxon_name = $taxons[$idx];
+            $taxon[$taxon_name] = $current_level->name;
+            if ($taxon_name != "kingdom") {
+                $current_level = $classes[$idx]::find($current_level[$taxons[$idx+1]."_id"]);
+            }
+            $idx ++;
+            print_r($taxon);
+        }
+    }
     public function api_fetcher($search_value, $search_type = 0, $is_id = false) {
         $query_url = [
             "https://api.gbif.org/v1/species/match?name=$search_value",

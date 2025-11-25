@@ -41,6 +41,13 @@ class PlantController extends Controller {
             "plants" => $plants,
         ];
     }
+    public function view(Plant $plant) {
+        $this->taxon_builder($plant->specie_id);
+        return [
+            "plant" => $plant,
+            "taxon" => $plant,
+        ];
+    }
     public function create() {
     }
     public function store(Plant_suggestionRequest $request) {
