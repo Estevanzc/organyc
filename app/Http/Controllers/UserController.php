@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Carbon\Carbon;
+use App\Models\User;
+use Inertia\Inertia;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\PasswordRecover;
@@ -11,22 +12,27 @@ use App\Models\Password_token;
 use App\Http\Requests\UserRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\Password;
-use Inertia\Inertia;
 
 class UserController extends Controller {
-    public function index() {
+    public function index(User $user) {
+        if (Gate::denies("view", $user)) {
+            return redirect()->route("index")->withErrors([
+                "Access denied" => "You do not have the permission to do this action"
+            ]);
+        }
         return [
-            "user" => User::find(Auth::user()->id),
+            "user" => $user,
         ];
     }
-    public function logon() {
-        return Inertia::render("Logon");
-    }
     public function login() {
-        return Inertia::render("Login");
+        return Inertia::render("Auth/Login");
+    }
+    public function logon() {
+        return Inertia::render("Auth/Register");
     }
     public function auth_login(Request $request) {
         $request_data = $request->validate([
@@ -72,11 +78,21 @@ class UserController extends Controller {
     public function show(string $id) {
     }
     public function edit(User $user) {
+        if (Gate::denies("update", $user)) {
+            return redirect()->route("index")->withErrors([
+                "Access denied" => "You do not have the permission to do this action"
+            ]);
+        }
         return ["user" => $user];
     }
     public function update(UserRequest $request) {
         $request_data = $request->validated();
         $user = User::find($request_data["id"]);
+        if (Gate::denies("update", $user)) {
+            return redirect()->route("index")->withErrors([
+                "Access denied" => "You do not have the permission to do this action"
+            ]);
+        }
         $user->update($request_data);
         return;// return to the user profile
     }
@@ -84,6 +100,11 @@ class UserController extends Controller {
         $user = User::where("email", $email)->first();
         if (empty($user)) {
             return;//return to the home
+        }
+        if (Gate::denies("recover", $user)) {
+            return redirect()->route("index")->withErrors([
+                "Access denied" => "You do not have the permission to do this action"
+            ]);
         }
         $token = Password_token::create([
             "name" => (string) Str::uuid(),
@@ -114,6 +135,11 @@ class UserController extends Controller {
         return;//return to the user profile
     }
     public function destroy(User $user) {
+        if (Gate::denies("delete", $user)) {
+            return redirect()->route("index")->withErrors([
+                "Access denied" => "You do not have the permission to do this action"
+            ]);
+        }
         $user->delete();
         return;// return to the home
     }

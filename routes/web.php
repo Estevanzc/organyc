@@ -10,19 +10,8 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\LoginVerify;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-Route::get('/', function () {
-    return view('test_api');
-});
-
-Route::get('/login', function () {
-    return Inertia::render('Auth/Login');
-});
-Route::get('/register', function () {
-    return Inertia::render('Auth/Register');
-});
-
+Route::get("/", [CreatureController::class, "index"])->name("index");
 Route::prefix("/creatures")->group(function () {
     Route::get("/view/{gbif_id}/{is_plant?}", [CreatureController::class, "view"])->name("creature.view");
     Route::get("/create/{gbif_id}/{is_plant?}", [CreatureController::class, "create"])->name("creature.create")->middleware(LoginVerify::class);
@@ -53,7 +42,7 @@ Route::prefix("/report")->group(function() {
 })->middleware(LoginVerify::class);
 
 Route::get("/login", [UserController::class, "login"])->name("login");
-Route::get("/logon", [UserController::class, "logon"])->name("logon");
+Route::get("/register", [UserController::class, "logon"])->name("logon");
 Route::prefix("/user")->group(function () {
     Route::prefix("/password")->group(function() {
         Route::get("/recover/{email}", [UserController::class, "password_recover"])->name("user.password.recover");

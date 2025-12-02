@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Animal_activity;
+use App\Models\Daily_creature;
 use App\Models\Plant;
 use App\Models\Animal;
 use App\Models\Plant_activity;
@@ -14,6 +15,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
 class CreatureController extends Controller {
+    public function index() {
+        $daily_creature = Daily_creature::latest()->first();
+        $daily_creature = ([Animal::class, Plant::class][$daily_creature->is_plant ? 1 : 0])::find($daily_creature->creature_id);
+        return [
+            "daily_creature" => $daily_creature,
+            "photo" => $daily_creature->photos[0],
+        ];
+    }
     public function response_builder($response, $is_plant) {
         $response_count = sizeof($response) < 3 ? sizeof($response)-1 : 2;
         $builded_reponse = [];
@@ -110,7 +119,5 @@ class CreatureController extends Controller {
         $is_plant = $is_plant == 1 ? true : false;
         $creature = ([Plant_suggestion::class, Animal_suggestion::class][$is_plant ? 0 : 1])::where("gbif_id", $gbif_id)->first();
         return redirect()->route((($is_plant ? "plant" : "animal").".suggestion.".(empty($creature) ? "create" : "edit")), [$gbif_id, ($is_plant ? 1 : 0)]);
-    }
-    public function index() {
     }
 }
