@@ -3,27 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Animal_activity;
-use App\Models\Animal_report;
-use App\Models\Clas;
-use App\Models\Genu;
-use App\Models\Order;
 use App\Models\Plant;
 use App\Models\Animal;
-use App\Models\Domain;
-use App\Models\Family;
-use App\Models\Phylum;
 use App\Models\Plant_activity;
-use App\Models\Plant_report;
-use App\Models\Specie;
-use App\Models\Kingdom;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Plant_suggestion;
 use App\Models\Animal_suggestion;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Storage;
 
 class CreatureController extends Controller {
     public function response_builder($response, $is_plant) {

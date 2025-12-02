@@ -11,7 +11,16 @@ use Illuminate\Http\Request;
 
 class ReportController extends Controller {
     public function index() {
-        $animal_report = Animal_report::all();
+        $animals = Animal_report::all();
+        $plants = Plant_report::all();
+
+        $reports = $animals
+            ->merge($plants)
+            ->sortByDesc('created_at')
+            ->values();
+        return [
+            "reports" => $reports,
+        ];
     }
     public function create($is_plant, $creature_id) {
         $creature = ([[Plant::class, "plant"], [Animal::class, "animal"]][$is_plant])::find($creature_id);

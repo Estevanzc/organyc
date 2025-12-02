@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\Password;
+use Inertia\Inertia;
 
 class UserController extends Controller {
     public function index() {
@@ -22,10 +23,10 @@ class UserController extends Controller {
         ];
     }
     public function logon() {
-        return;
+        return Inertia::render("Logon");
     }
     public function login() {
-        return ;
+        return Inertia::render("Login");
     }
     public function auth_login(Request $request) {
         $request_data = $request->validate([
