@@ -10,19 +10,21 @@ use App\Models\Plant_photo;
 use App\Models\Plant_suggestion;
 use Illuminate\Http\Request;
 
-class PlantController extends Controller {
-    public function filter($filter = []) {
+class PlantController extends Controller
+{
+    public function filter($filter = [])
+    {
         $plants = Plant::query();
         if (!empty($filter)) {
             $plants->where(function ($query) use ($filter) {
                 foreach ($filter as $filter_name => $filter_item) {
                     if (!empty($filter_item)) {
-                        $query->orWhere($filter_name, 'like', "%".$filter_item."%");
+                        $query->orWhere($filter_name, 'like', "%" . $filter_item . "%");
                     }
                 }
                 /*
                 expecting this values as filter:
-                
+
                 common_name
                 conservation_status
                 type
@@ -35,22 +37,33 @@ class PlantController extends Controller {
         $plants = $plants->paginate(20);
         return $plants;
     }
-    public function index($filter = []) {
+    public function index($filter = [])
+    {
         $plants = $this->filter($filter);
         return [ //return the plants catalogue
             "plants" => $plants,
         ];
     }
-    public function view(Plant $plant) {
-        $this->taxon_builder($plant->specie_id);
+    public function view(Plant $plant)
+    {
+        $taxon = $this->taxon_builder($plant->specie_id);
         return [
             "plant" => $plant,
-            "taxon" => $plant,
+            "taxon" => $taxon,
+            "similar" => Plant::whereHas('specie', function ($q) use ($plant) {
+                $q->where('genu_id', $plant->specie->genu_id);
+            })
+                ->where('id', '!=', $plant->id)
+                ->inRandomOrder()
+                ->limit(5)
+                ->get(),
         ];
     }
-    public function create() {
+    public function create()
+    {
     }
-    public function store(Plant_suggestionRequest $request) {
+    public function store(Plant_suggestionRequest $request)
+    {
         $request_data = $request->validated();
         $suggestion = Plant_suggestion::find($request_data["id"]);
         if (empty($suggestion)) {
@@ -102,13 +115,17 @@ class PlantController extends Controller {
             "plant" => $plant,// return the page of the animal
         ];
     }
-    public function show(string $id) {
+    public function show(string $id)
+    {
     }
-    public function edit(string $id) {
+    public function edit(string $id)
+    {
     }
-    public function update(PlantRequest $request) {
+    public function update(PlantRequest $request)
+    {
         $request_data = $request->validated();
     }
-    public function destroy(string $id) {
+    public function destroy(string $id)
+    {
     }
 }

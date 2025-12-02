@@ -38,6 +38,20 @@ class AnimalController extends Controller {
             "animals" => $animals,
         ];
     }
+    public function view(Animal $animal) {
+        $taxon = $this->taxon_builder($animal->specie_id);
+        return [
+            "animal" => $animal,
+            "taxon" => $taxon,
+            "similar" => Animal::whereHas('specie', function ($q) use ($animal) {
+                $q->where('genu_id', $animal->specie->genu_id);
+            })
+                ->where('id', '!=', $animal->id)
+                ->inRandomOrder()
+                ->limit(5)
+                ->get(),
+        ];
+    }
     public function create() {
     }
     public function store(Animal_suggestionRequest $request) {

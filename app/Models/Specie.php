@@ -19,6 +19,12 @@ class Specie extends Model {
     public function genu(): BelongsTo {
         return $this->belongsTo(Genu::class);
     }
+    public function animals(): HasMany {
+        return $this->hasMany(Animal::class);
+    }
+    public function plants(): HasMany {
+        return $this->hasMany(Plant::class);
+    }
     public function creature($is_plant, $specie) {
         $specie_id = Specie::where("name", $specie)->first();
         $specie_id = empty($specie_id) ? null : $specie_id->id;
