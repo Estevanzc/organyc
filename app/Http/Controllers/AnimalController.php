@@ -58,7 +58,9 @@ class AnimalController extends Controller {
         $request_data = $request->validated();
         $suggestion = Animal_suggestion::find($request_data["id"]);
         if (empty($suggestion)) {
-            return; //redirect to home with errors
+            return redirect()->route("index")->withErrors([
+                "Not found" => "We did not find any animal suggestion like this"
+            ]);
         }
         $specie_id = $this->taxon_creater([
             "kingdom" => $request_data['kingdom'],

@@ -94,12 +94,16 @@ class UserController extends Controller {
             ]);
         }
         $user->update($request_data);
-        return;// return to the user profile
+        return redirect()->route("user.profile", ["user" => $user->id])->with([
+            "Success" => "Your account has been updated"
+        ]);
     }
     public function password_recover($email) {
         $user = User::where("email", $email)->first();
         if (empty($user)) {
-            return;//return to the home
+            return redirect()->route("index")->withErrors([
+                "No user finded" => "There is no user with this email"
+            ]);
         }
         if (Gate::denies("recover", $user)) {
             return redirect()->route("index")->withErrors([
@@ -116,7 +120,9 @@ class UserController extends Controller {
     public function password_reseter($token) {
         $token = Password_token::where("name", $token)->first();
         if (empty($token) || Carbon::parse($token->created_at)->diffInMinutes(Carbon::now()) > 60) {
-            return; // return to the home
+            return redirect()->route("index")->withErrors([
+                "Access denied" => "Your token is invalid or expired"
+            ]);
         }
         return [
             "token" => $token->name,
@@ -132,7 +138,9 @@ class UserController extends Controller {
         $token = Password_token::where("name", $request_data["token"])->first();
         $user = User::find($request_data["id"]);
         $user->update(["password" => $request_data["password"]]);
-        return;//return to the user profile
+        return redirect()->route("user.profile", ["user" => $user->id])->with([
+            "Success" => "Your password has been updated"
+        ]);
     }
     public function destroy(User $user) {
         if (Gate::denies("delete", $user)) {
@@ -141,6 +149,8 @@ class UserController extends Controller {
             ]);
         }
         $user->delete();
-        return;// return to the home
+        return redirect()->route("index")->with([
+            "Success" => "Your user account has been deleted."
+        ]);
     }
 }

@@ -44,6 +44,7 @@ Route::prefix("/report")->group(function() {
 Route::get("/login", [UserController::class, "login"])->name("login");
 Route::get("/register", [UserController::class, "logon"])->name("logon");
 Route::prefix("/user")->group(function () {
+    Route::get("/profile/{user}", [UserController::class, "index"])->name("user.profile")->middleware(LoginVerify::class);
     Route::prefix("/password")->group(function() {
         Route::get("/recover/{email}", [UserController::class, "password_recover"])->name("user.password.recover");
         Route::get("/reseter/{token}", [UserController::class, "password_reseter"])->name("user.password.reseter");
