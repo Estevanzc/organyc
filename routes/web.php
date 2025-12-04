@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get("/", [CreatureController::class, "index"])->name("index");
 Route::prefix("/creatures")->group(function () {
+    Route::post("/recognize", [CreatureController::class, "recognizer"])->name("creature.recognize");
     Route::get("/view/{gbif_id}/{is_plant?}", [CreatureController::class, "view"])->name("creature.view");
     Route::get("/create/{gbif_id}/{is_plant?}", [CreatureController::class, "create"])->name("creature.create")->middleware(LoginVerify::class);
     Route::prefix("/plants")->group(function () {
