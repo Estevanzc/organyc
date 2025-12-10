@@ -30,7 +30,7 @@ defineProps({
                     </p>
 
                     <div class="mt-4">
-                        <Link :href="route('plant.view', plant.id)"
+                        <Link :href="`/creatures/plants/view/${plant.id}`"
                             class="text-green-700 hover:text-green-900 font-semibold">
                             View Details →
                         </Link>

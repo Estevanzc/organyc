@@ -10,9 +10,9 @@
 
         <nav class="primary-nav w-7/10 h-full flex items-center">
             <ul class="nav-links flex flex-1 items-center justify-evenly text-lg">
-                <li>Home</li>
-                <li>Animals</li>
-                <li>Plants</li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/creatures/animals/catalogue">Animals</a></li>
+                <li><a href="/creatures/plants/catalogue">Plants</a></li>
             </ul>
         </nav>
 
