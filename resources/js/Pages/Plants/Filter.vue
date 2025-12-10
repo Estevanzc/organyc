@@ -1,99 +1,87 @@
-<script setup>
-import { ref } from 'vue'
-import { Link } from '@inertiajs/vue3'
-
-const filters = ref({
-    common_name: '',
-    conservation_status: '',
-    type: '',
-    leaf_type: '',
-    habitat: '',
-    color: ''
-})
-
-const plants = ref(null)
-
-async function applyFilters() {
-    const query = encodeURIComponent(JSON.stringify(filters.value))
-    const url = `/creatures/plants/filter/${query}`
-
-    const response = await fetch(url)
-    plants.value = await response.json()
-}
-</script>
-
 <template>
-    <div class="min-h-screen bg-green-50">
-        <div class="max-w-7xl mx-auto px-6 py-14">
+    <div class="min-h-screen bg-gray-900 text-gray-100">
+        <div class="max-w-6xl mx-auto px-6 py-12">
 
-            <h1 class="text-3xl font-bold text-green-900 mb-10">Filter Plants</h1>
+            <h1 class="text-4xl font-bold text-green-300 mb-10">Filter Plants</h1>
 
-            <div class="bg-white rounded-xl p-8 shadow border border-green-200 mb-12">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- FILTER BOX -->
+            <div class="bg-gray-800 p-6 rounded-lg mb-12 border border-gray-700 shadow-lg">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
-                    <div>
-                        <label class="text-green-900 font-semibold">Name</label>
-                        <input v-model="filters.common_name" type="text"
-                            class="w-full mt-1 p-2 border border-green-300 rounded" />
-                    </div>
+                    <input v-model="filter.common_name" placeholder="Name" class="px-4 py-2 rounded bg-gray-900 border border-gray-700 text-gray-100 
+                               focus:ring-green-500 focus:border-green-500">
 
-                    <div>
-                        <label class="text-green-900 font-semibold">Type</label>
-                        <input v-model="filters.type" type="text"
-                            class="w-full mt-1 p-2 border border-green-300 rounded" />
-                    </div>
+                    <input v-model="filter.color" placeholder="Color" class="px-4 py-2 rounded bg-gray-900 border border-gray-700 text-gray-100 
+                               focus:ring-green-500 focus:border-green-500">
 
-                    <div>
-                        <label class="text-green-900 font-semibold">Habitat</label>
-                        <input v-model="filters.habitat" type="text"
-                            class="w-full mt-1 p-2 border border-green-300 rounded" />
-                    </div>
-
-                    <div>
-                        <label class="text-green-900 font-semibold">Leaf Type</label>
-                        <input v-model="filters.leaf_type" type="text"
-                            class="w-full mt-1 p-2 border border-green-300 rounded" />
-                    </div>
-
-                    <div>
-                        <label class="text-green-900 font-semibold">Color</label>
-                        <input v-model="filters.color" type="text"
-                            class="w-full mt-1 p-2 border border-green-300 rounded" />
-                    </div>
-
-                    <div>
-                        <label class="text-green-900 font-semibold">Conservation</label>
-                        <input v-model="filters.conservation_status" type="text"
-                            class="w-full mt-1 p-2 border border-green-300 rounded" />
-                    </div>
-
+                    <input v-model="filter.habitat" placeholder="Habitat" class="px-4 py-2 rounded bg-gray-900 border border-gray-700 text-gray-100
+                               focus:ring-green-500 focus:border-green-500">
                 </div>
 
-                <button @click="applyFilters" class="mt-6 bg-green-700 text-white px-6 py-3 rounded hover:bg-green-800">
-                    Apply Filters
+                <button @click="apply"
+                    class="mt-4 px-6 py-2 bg-green-600 hover:bg-green-700 rounded text-white font-semibold shadow">
+                    Apply Filter
                 </button>
             </div>
 
-            <div v-if="plants">
-                <h2 class="text-2xl font-bold text-green-900 mb-6">Results</h2>
+            <!-- PLANTS GRID -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div v-for="plant in plants.data" :key="plant.id"
-                        class="bg-white rounded-xl border border-green-200 p-6 shadow">
-                        <h3 class="text-xl text-green-800 font-semibold">{{ plant.common_name }}</h3>
+                <div v-for="p in plants.data" :key="p.id" class="bg-gray-800 p-6 rounded-lg border border-gray-700 shadow-lg 
+                           hover:border-green-400 transition">
+                    <h2 class="text-2xl font-semibold text-green-300">
+                        {{ p.common_name }}
+                    </h2>
 
-                        <p class="text-sm text-green-700">
-                            <span class="font-semibold">Type:</span> {{ plant.type }}
-                        </p>
+                    <p class="text-sm text-gray-300 mt-2">
+                        <span class="text-green-400 font-semibold">Color:</span> {{ p.color }}
+                    </p>
 
-                        <Link :href="route('plant.view', plant.id)"
-                            class="text-green-700 hover:text-green-900 mt-3 inline-block font-semibold">
-                            View →
-                        </Link>
-                    </div>
+                    <p class="text-sm text-gray-300">
+                        <span class="text-green-400 font-semibold">Habitat:</span> {{ p.habitat }}
+                    </p>
+
+                    <Link :href="`/creatures/plants/view/${p.id}`" class="inline-block mt-4 px-4 py-2 bg-green-600 text-white rounded font-semibold 
+                               hover:bg-green-700 shadow">
+                        View
+                    </Link>
                 </div>
+            </div>
+
+            <!-- PAGINATION -->
+            <div class="flex justify-center mt-10 space-x-2">
+                <button v-for="link in plants.links" :key="link.label" :disabled="!link.url" @click="go(link.url)"
+                    v-html="link.label" class="px-4 py-2 rounded bg-gray-800 text-gray-300 border border-gray-700 
+                           hover:border-green-400 hover:text-green-300 disabled:opacity-40 transition">
+                </button>
             </div>
 
         </div>
     </div>
 </template>
+
+<script setup>
+import { router, Link } from '@inertiajs/vue3'
+import { reactive } from 'vue'
+
+const props = defineProps({
+    plants: Object,
+    filters: Object
+})
+
+const filter = reactive({
+    common_name: props.filters?.common_name ?? '',
+    color: props.filters?.color ?? '',
+    habitat: props.filters?.habitat ?? ''
+})
+
+function apply() {
+    router.get('/creatures/plants/filter', filter, {
+        preserveScroll: true
+    })
+}
+
+function go(url) {
+    router.visit(url)
+}
+</script>

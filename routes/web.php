@@ -28,7 +28,7 @@ Route::prefix("/creatures")->group(function () {
     });
     Route::prefix("/animals")->group(function () {
         Route::get("/view/{animal}", [AnimalController::class, "view"])->name("animal.view");
-        Route::get("/filter/{filter?}", [AnimalController::class, "filter"])->name("animal.filter"); //the filter value can be null, in this case, it just returns every item in the database. Always paginated
+        Route::get('/filter/{filter?}', [AnimalController::class, 'filter'])->name('animal.filter');
         Route::get("/catalogue", [AnimalController::class, "index"])->name("animal.index");
         Route::put("/store", [AnimalController::class, "store"])->name("animal.store")->middleware(LoginVerify::class);
         Route::prefix("/suggestion")->group(function () {
@@ -46,7 +46,7 @@ Route::prefix("/report")->group(function () {
 Route::get("/login", [UserController::class, "login"])->name("login");
 Route::get("/register", [UserController::class, "logon"])->name("logon");
 Route::prefix("/user")->group(function () {
-    Route::get("/profile/{user}", [UserController::class, "index"])->name("user.profile")->middleware(LoginVerify::class);
+    Route::get("/profile/{user}", [UserController::class, "index"])->name("user.profile");
     Route::prefix("/password")->group(function () {
         Route::get("/recover/{email}", [UserController::class, "password_recover"])->name("user.password.recover");
         Route::get("/reseter/{token}", [UserController::class, "password_reseter"])->name("user.password.reseter");
@@ -66,4 +66,3 @@ Route::prefix("/api")->group(function () {
     Route::post("/recognizer", [CreatureController::class, "recognizer"])->name("api.recognizer");
     Route::get("/api/{search_value}/{search_type?}/{is_id?}", [CreatureController::class, "api_fetcher"])->name("gbif_api");
 });
-

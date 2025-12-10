@@ -61,7 +61,11 @@ const search = reactive({
 })
 
 function applyFilter() {
-    router.get('/animals', search, { preserveState: true })
+    router.get('/creatures/animals/filter', search, {
+        preserveState: true,
+        preserveScroll: true,
+        replace: true,
+    });
 }
 
 function goTo(url) {

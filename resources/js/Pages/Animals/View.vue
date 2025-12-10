@@ -2,7 +2,7 @@
     <div class="min-h-screen bg-[#1a1e17] text-white">
         <div class="max-w-5xl mx-auto px-6 py-12">
 
-            <Link href="/animals" class="text-orange-300 hover:underline">&larr; Back to catalogue</Link>
+            <Link href="/creatures/animals/catalogue" class="text-orange-300 hover:underline">&larr; Back to catalogue</Link>
 
             <h1 class="text-5xl font-bold mt-6 text-orange-300">{{ animal.common_name }}</h1>
             <p class="text-lg mt-2 text-gray-300">{{ animal.description }}</p>
@@ -36,13 +36,13 @@
 
             <div class="bg-[#242a21] p-6 rounded-lg mt-10">
                 <h2 class="text-2xl font-semibold text-orange-200 mb-4">Taxonomy</h2>
-                <p><span class="text-orange-400">Kingdom:</span> {{ taxon.kingdom }}</p>
-                <p><span class="text-orange-400">Phylum:</span> {{ taxon.phylum }}</p>
-                <p><span class="text-orange-400">Class:</span> {{ taxon.class }}</p>
-                <p><span class="text-orange-400">Order:</span> {{ taxon.order }}</p>
-                <p><span class="text-orange-400">Family:</span> {{ taxon.family }}</p>
-                <p><span class="text-orange-400">Genus:</span> {{ taxon.genu }}</p>
-                <p><span class="text-orange-400">Species:</span> {{ taxon.specie }}</p>
+                <p><span class="text-orange-400">Kingdom:</span> {{ taxon["kingdom"].name }}</p>
+                <p><span class="text-orange-400">Phylum:</span> {{ taxon["phylum"].name }}</p>
+                <p><span class="text-orange-400">Class:</span> {{ taxon["class"].name }}</p>
+                <p><span class="text-orange-400">Order:</span> {{ taxon["order"].name }}</p>
+                <p><span class="text-orange-400">Family:</span> {{ taxon["family"].name }}</p>
+                <p><span class="text-orange-400">Genus:</span> {{ taxon["genu"].name }}</p>
+                <p><span class="text-orange-400">Species:</span> {{ taxon["specie"].name }}</p>
             </div>
 
             <div v-if="similar.length" class="mt-16">

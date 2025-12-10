@@ -19,14 +19,10 @@ use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller {
     public function index(User $user) {
-        if (Gate::denies("view", $user)) {
-            return redirect()->route("index")->withErrors([
-                "Access denied" => "You do not have the permission to do this action"
-            ]);
-        }
-        return [
-            "user" => $user,
-        ];
+  
+         return Inertia::render("User", [
+             "user" => $user,
+        ]);
     }
     public function login() {
         return Inertia::render("Auth/Login");

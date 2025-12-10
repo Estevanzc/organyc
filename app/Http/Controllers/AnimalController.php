@@ -12,34 +12,41 @@ use Inertia\Inertia;
 
 class AnimalController extends Controller
 {
-    public function filter($filter = [])
+    public function index(Request $request)
     {
+        $animals = Animal::paginate(20);
+
+        return Inertia::render("Animals/Index", [
+            "animals" => $animals,
+            "filters" => $request->query(),
+        ]);
+    }
+
+    public function filter(Request $request)
+    {
+        $filters = $request->query();
+
         $animals = Animal::query();
-        if (!empty($filter)) {
-            $animals->where(function ($query) use ($filter) {
-                foreach ($filter as $filter_name => $filter_item) {
-                    if (!empty($filter_item)) {
-                        $query->orWhere($filter_name, 'like', "%" . $filter_item . "%");
-                    }
-                }
-            });
+
+        foreach ($filters as $field => $value) {
+            if (!empty($value)) {
+                $animals->where($field, "like", "%{$value}%");
+            }
         }
 
-        $animals = $animals->paginate(20);
-        return $animals;
+        return Inertia::render("Animals/Filter", [
+            "animals" => $animals->paginate(20)->appends($filters),
+            "filters" => $filters,
+        ]);
     }
-    public function index($filter = [])
-    {
-        $animals = $this->filter($filter);
 
-        return Inertia::render("Animals/Index", ["animals" => $animals]);
-    }
     public function view(Animal $animal)
     {
         $taxon = $this->taxon_builder($animal->specie_id);
+
         return Inertia::render("Animals/View", [
             "animal" => $animal,
-            "taxon" => $taxon,
+            "taxon"  => $taxon,
             "similar" => Animal::whereHas('specie', function ($q) use ($animal) {
                 $q->where('genu_id', $animal->specie->genu_id);
             })
@@ -49,9 +56,7 @@ class AnimalController extends Controller
                 ->get(),
         ]);
     }
-    public function create()
-    {
-    }
+    public function create() {}
     public function store(Animal_suggestionRequest $request)
     {
         $request_data = $request->validated();
@@ -96,19 +101,11 @@ class AnimalController extends Controller
             "animal_id" => $animal->id,
         ]);
         $suggestion->delete();
-        
+
         return Inertia::render("Animals/View", ["animal" => $animal]);
     }
-    public function show(string $id)
-    {
-    }
-    public function edit(string $id)
-    {
-    }
-    public function update(Request $request, string $id)
-    {
-    }
-    public function destroy(string $id)
-    {
-    }
+    public function show(string $id) {}
+    public function edit(string $id) {}
+    public function update(Request $request, string $id) {}
+    public function destroy(string $id) {}
 }

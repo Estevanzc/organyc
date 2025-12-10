@@ -17,7 +17,7 @@
         </nav>
 
         <div class="appheader-actions text-lg">
-            <a href="#" aria-label="login" class="text-lime-500">
+            <a href="/user/profile/1" aria-label="login" class="text-lime-500">
                 My Profile
                 <font-awesome-icon class="block text-center cursor-pointer"
                             :icon="['fas', 'chevron-down']"></font-awesome-icon>

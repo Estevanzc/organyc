@@ -13,37 +13,35 @@ use Inertia\Inertia;
 
 class PlantController extends Controller
 {
-    public function filter($filter = [])
+    public function index(Request $request)
     {
+        $animals = Plant::paginate(20);
+
+        return Inertia::render("Plants/Index", [
+            "plants" => $animals,
+            "filters" => $request->query(),
+        ]);
+    }
+
+    public function filter(Request $request)
+    {
+        $filters = $request->query();
+
         $plants = Plant::query();
-        if (!empty($filter)) {
-            $plants->where(function ($query) use ($filter) {
-                foreach ($filter as $filter_name => $filter_item) {
-                    if (!empty($filter_item)) {
-                        $query->orWhere($filter_name, 'like', "%" . $filter_item . "%");
-                    }
-                }
-                /*
-                expecting this values as filter:
 
-                common_name
-                conservation_status
-                type
-                leaf_type
-                habitat
-                color
-                */
-            });
+        foreach ($filters as $field => $value) {
+            if (!empty($value)) {
+                $plants->where($field, "like", "%{$value}%");
+            }
         }
-        $plants = $plants->paginate(20);
-        return $plants;
-    }
-    public function index($filter = [])
-    {
-        $plants = $this->filter($filter);
 
-        return Inertia::render("Plants/Index", ["plants" => $plants]);
+        return Inertia::render("Plants/Filter", [
+            "plants" => $plants->paginate(20)->appends($filters),
+            "filters" => $filters,
+        ]);
     }
+
+
     public function view(Plant $plant)
     {
         $taxon = $this->taxon_builder($plant->specie_id);
@@ -60,9 +58,7 @@ class PlantController extends Controller
                 ->get(),
         ]);
     }
-    public function create()
-    {
-    }
+    public function create() {}
     public function store(Plant_suggestionRequest $request)
     {
         $request_data = $request->validated();
@@ -115,20 +111,14 @@ class PlantController extends Controller
         ]);
         $suggestion->delete();
         return Inertia::render("Plants/View", [
-            "plant" => $plant,// return the page of the animal
+            "plant" => $plant, // return the page of the animal
         ]);
     }
-    public function show(string $id)
-    {
-    }
-    public function edit(string $id)
-    {
-    }
+    public function show(string $id) {}
+    public function edit(string $id) {}
     public function update(PlantRequest $request)
     {
         $request_data = $request->validated();
     }
-    public function destroy(string $id)
-    {
-    }
+    public function destroy(string $id) {}
 }
