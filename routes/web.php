@@ -37,7 +37,7 @@ Route::prefix("/creatures")->group(function () {
         })->middleware(LoginVerify::class);
     });
 });
-Route::prefix("/report")->group(function() {
+Route::prefix("/report")->group(function () {
     Route::get("/", [ReportController::class, "index"])->name("report.index");
     Route::get("/create", [ReportController::class, "create"])->name("report.create");
     Route::post("/store", [ReportController::class, "store"])->name("report.store");
@@ -47,7 +47,7 @@ Route::get("/login", [UserController::class, "login"])->name("login");
 Route::get("/register", [UserController::class, "logon"])->name("logon");
 Route::prefix("/user")->group(function () {
     Route::get("/profile/{user}", [UserController::class, "index"])->name("user.profile")->middleware(LoginVerify::class);
-    Route::prefix("/password")->group(function() {
+    Route::prefix("/password")->group(function () {
         Route::get("/recover/{email}", [UserController::class, "password_recover"])->name("user.password.recover");
         Route::get("/reseter/{token}", [UserController::class, "password_reseter"])->name("user.password.reseter");
         Route::post("/update", [UserController::class, "password_update"])->name("user.password.update");
@@ -62,4 +62,8 @@ Route::prefix("/test")->group(function () {
     Route::get("/taxon/{taxon?}", [TestController::class, "taxon_creater"])->name("taxon_test");
 });
 
-Route::get("/api/{search_value}/{search_type?}/{is_id?}", [CreatureController::class, "api_fetcher"])->name("gbif_api");
+Route::prefix("/api")->group(function () {
+    Route::post("/recognizer", [CreatureController::class, "recognizer"])->name("api.recognizer");
+    Route::get("/api/{search_value}/{search_type?}/{is_id?}", [CreatureController::class, "api_fetcher"])->name("gbif_api");
+});
+
