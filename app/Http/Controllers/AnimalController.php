@@ -32,12 +32,12 @@ class AnimalController extends Controller
     {
         $animals = $this->filter($filter);
 
-        return Inertia::render("/Animals", ["animals" => $animals]);
+        return Inertia::render("Animals/Index", ["animals" => $animals]);
     }
     public function view(Animal $animal)
     {
         $taxon = $this->taxon_builder($animal->specie_id);
-        return Inertia::render("/Animals/View", [
+        return Inertia::render("Animals/View", [
             "animal" => $animal,
             "taxon" => $taxon,
             "similar" => Animal::whereHas('specie', function ($q) use ($animal) {
@@ -97,7 +97,7 @@ class AnimalController extends Controller
         ]);
         $suggestion->delete();
         
-        return Inertia::render("/Animals/View", ["animal" => $animal]);
+        return Inertia::render("Animals/View", ["animal" => $animal]);
     }
     public function show(string $id)
     {

@@ -42,13 +42,13 @@ class PlantController extends Controller
     {
         $plants = $this->filter($filter);
 
-        return Inertia::render("/Plants", ["plants" => $plants]);
+        return Inertia::render("Plants/Index", ["plants" => $plants]);
     }
     public function view(Plant $plant)
     {
         $taxon = $this->taxon_builder($plant->specie_id);
 
-        return Inertia::render("/Plants/View", [
+        return Inertia::render("Plants/View", [
             "plant" => $plant,
             "taxon" => $taxon,
             "similar" => Plant::whereHas('specie', function ($q) use ($plant) {
@@ -114,7 +114,7 @@ class PlantController extends Controller
             "plant_id" => $plant->id,
         ]);
         $suggestion->delete();
-        return Inertia::render("/Plants/View", [
+        return Inertia::render("Plants/View", [
             "plant" => $plant,// return the page of the animal
         ]);
     }
