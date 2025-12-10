@@ -17,14 +17,6 @@
     --beige-1: #FFFADC;
 }
 
-body,
-html,
-#app {
-    overflow: hidden;
-    height: 100%;
-    width: 100%;
-}
-
 @keyframes wind {
     from {
         transform: rotate(-3deg) rotateY(15deg);

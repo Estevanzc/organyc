@@ -9,6 +9,7 @@ use App\Models\Plant;
 use App\Models\Plant_photo;
 use App\Models\Plant_suggestion;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class PlantController extends Controller
 {
@@ -40,14 +41,14 @@ class PlantController extends Controller
     public function index($filter = [])
     {
         $plants = $this->filter($filter);
-        return [ //return the plants catalogue
-            "plants" => $plants,
-        ];
+
+        return Inertia::render("/Plants", ["plants" => $plants]);
     }
     public function view(Plant $plant)
     {
         $taxon = $this->taxon_builder($plant->specie_id);
-        return [
+
+        return Inertia::render("/Plants/View", [
             "plant" => $plant,
             "taxon" => $taxon,
             "similar" => Plant::whereHas('specie', function ($q) use ($plant) {
@@ -57,7 +58,7 @@ class PlantController extends Controller
                 ->inRandomOrder()
                 ->limit(5)
                 ->get(),
-        ];
+        ]);
     }
     public function create()
     {
@@ -113,9 +114,9 @@ class PlantController extends Controller
             "plant_id" => $plant->id,
         ]);
         $suggestion->delete();
-        return [
+        return Inertia::render("/Plants/View", [
             "plant" => $plant,// return the page of the animal
-        ];
+        ]);
     }
     public function show(string $id)
     {

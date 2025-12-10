@@ -5,7 +5,7 @@
             class="login-form-wrapper std-glass relative w-1/2 h-full px-16 py-12 flex flex-col justify-center border-r-2 border-white shadow-2xl shadow-black/65 z-90">
 
             <div class="flex flex-col justify-center mx-16">
-                <h1 class="main-title justify-self-start text-4xl text-slate-50 font-bold">Register yourself!!</h1>
+                <h1 class="main-title justify-self-start text-4xl text-slate-50 font-bold">Register yourself!</h1>
 
                 <form @submit.prevent="submit" class="w-full flex flex-1 flex-col gap-4 py-6">
                     

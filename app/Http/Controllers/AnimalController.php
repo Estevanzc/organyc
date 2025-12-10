@@ -8,39 +8,36 @@ use App\Models\Animal;
 use App\Models\Animal_photo;
 use App\Models\Animal_suggestion;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
-class AnimalController extends Controller {
-    public function filter($filter = []) {
+class AnimalController extends Controller
+{
+    public function filter($filter = [])
+    {
         $animals = Animal::query();
         if (!empty($filter)) {
             $animals->where(function ($query) use ($filter) {
                 foreach ($filter as $filter_name => $filter_item) {
                     if (!empty($filter_item)) {
-                        $query->orWhere($filter_name, 'like', "%".$filter_item."%");
+                        $query->orWhere($filter_name, 'like', "%" . $filter_item . "%");
                     }
                 }
-                /*
-                expecting this values as filter:
-                
-                common_name
-                conservation_status
-                habitat
-                diet
-                */
             });
         }
+
         $animals = $animals->paginate(20);
         return $animals;
     }
-    public function index($filter = []) {
+    public function index($filter = [])
+    {
         $animals = $this->filter($filter);
-        return [ //return the animals catalogue
-            "animals" => $animals,
-        ];
+
+        return Inertia::render("/Animals", ["animals" => $animals]);
     }
-    public function view(Animal $animal) {
+    public function view(Animal $animal)
+    {
         $taxon = $this->taxon_builder($animal->specie_id);
-        return [
+        return Inertia::render("/Animals/View", [
             "animal" => $animal,
             "taxon" => $taxon,
             "similar" => Animal::whereHas('specie', function ($q) use ($animal) {
@@ -50,11 +47,13 @@ class AnimalController extends Controller {
                 ->inRandomOrder()
                 ->limit(5)
                 ->get(),
-        ];
+        ]);
     }
-    public function create() {
+    public function create()
+    {
     }
-    public function store(Animal_suggestionRequest $request) {
+    public function store(Animal_suggestionRequest $request)
+    {
         $request_data = $request->validated();
         $suggestion = Animal_suggestion::find($request_data["id"]);
         if (empty($suggestion)) {
@@ -97,16 +96,19 @@ class AnimalController extends Controller {
             "animal_id" => $animal->id,
         ]);
         $suggestion->delete();
-        return [
-            "animal" => $animal,// return the page of the animal
-        ];
+        
+        return Inertia::render("/Animals/View", ["animal" => $animal]);
     }
-    public function show(string $id) {
+    public function show(string $id)
+    {
     }
-    public function edit(string $id) {
+    public function edit(string $id)
+    {
     }
-    public function update(Request $request, string $id) {
+    public function update(Request $request, string $id)
+    {
     }
-    public function destroy(string $id) {
+    public function destroy(string $id)
+    {
     }
 }

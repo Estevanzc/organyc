@@ -84,6 +84,6 @@ class Animal_suggestionController extends Controller {
     }
     public function destroy(Animal_suggestion $animal_suggestion) {
         $animal_suggestion->delete();
-        return redirect()->route("");
+        return redirect()->route("/");
     }
 }
