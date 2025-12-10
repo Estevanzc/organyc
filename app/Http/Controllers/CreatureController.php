@@ -124,34 +124,24 @@ class CreatureController extends Controller
         // Checkbox value needs to be explicitly checked for 'on'
         $is_plant = ($request_data["is_plant"] ?? "off") == "on";
 
-        $api_key_env_var = $is_plant ? "PLANTNET_API_KEY" : "INATURALIST_API_KEY";
-        $api_key = env($api_key_env_var);
-
-        if (!$api_key) {
-            Log::error("Missing API Key for " . $api_key_env_var);
-            // Return 500 or 503 error since this is a server configuration issue
-            return response()->json(['error' => "Missing server configuration. Please ensure the '{$api_key_env_var}' environment variable is set."], 500);
-        }
-
-        $url = $is_plant
-            ? "https://my-api.plantnet.org/v2/identify/all?api-key={$api_key}"
-            : "https://api.inaturalist.org/v1/computervision/score_image";
-
-        $http_request = Http::withOptions([
-            'verify' => false, // Use with caution in production
-        ]);
+        $api_key = env($is_plant ? "PLANTNET_API_KEY" : "INATURALIST_API_KEY");
+        $url = $is_plant ? "https://my-api.plantnet.org/v2/identify/all?api-key={$api_key}" : "https://api.inaturalist.org/v1/computervision/score_image";
 
         if ($is_plant) {
-            $response = $http_request->attach(
-                'images',
-                file_get_contents($image->getRealPath()),
-                $image->getClientOriginalName()
-            )->post($url, [
+            $response = Http::withOptions([
+                'verify' => false,
+            ])->attach(
+                    'images',
+                    file_get_contents($image->getRealPath()),
+                    $image->getClientOriginalName()
+                )->post($url, [
                         'organs' => 'auto',
                     ]);
+            //dd("plant", $response);
         } else {
-            // iNaturalist API
-            $response = $http_request
+            $response = Http::withOptions([
+                'verify' => false,
+            ])->withToken($api_key)
                 ->attach(
                     'image',
                     file_get_contents($image->getRealPath()),
@@ -159,6 +149,7 @@ class CreatureController extends Controller
                 )->post($url, [
                         'taxon_id' => 1,
                     ]);
+            //dd("animal", $response);
         }
 
         if ($response->successful()) {
@@ -166,7 +157,7 @@ class CreatureController extends Controller
             $processed_response = $this->response_builder($results, $is_plant);
             return response()->json($processed_response);
         }
-
+        
         // Handle external API authentication errors (401/403) specifically
         if ($response->status() === 401 || $response->status() === 403) {
             Log::error("External API authentication failed (Missing or invalid PlantNet/iNaturalist API Key): " . $response->status() . " - " . $response->body());
