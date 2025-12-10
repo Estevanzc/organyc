@@ -15,7 +15,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Arr;
-use Inertia\Inertia;// For safer array access
+use Inertia\Inertia; // For safer array access
 
 class CreatureController extends Controller
 {
@@ -131,12 +131,12 @@ class CreatureController extends Controller
             $response = Http::withOptions([
                 'verify' => false,
             ])->attach(
-                    'images',
-                    file_get_contents($image->getRealPath()),
-                    $image->getClientOriginalName()
-                )->post($url, [
-                        'organs' => 'auto',
-                    ]);
+                'images',
+                file_get_contents($image->getRealPath()),
+                $image->getClientOriginalName()
+            )->post($url, [
+                'organs' => 'auto',
+            ]);
             //dd("plant", $response);
         } else {
             $response = Http::withOptions([
@@ -147,17 +147,20 @@ class CreatureController extends Controller
                     file_get_contents($image->getRealPath()),
                     $image->getClientOriginalName()
                 )->post($url, [
-                        'taxon_id' => 1,
-                    ]);
+                    'taxon_id' => 1,
+                ]);
             //dd("animal", $response);
         }
 
         if ($response->successful()) {
             $results = $response->json('results', []);
             $processed_response = $this->response_builder($results, $is_plant);
-            return response()->json($processed_response);
+            // return response()->json($processed_response);
+            return Inertia::render('Search', [
+                'results' => $processed_response,
+            ]);
         }
-        
+
         // Handle external API authentication errors (401/403) specifically
         if ($response->status() === 401 || $response->status() === 403) {
             Log::error("External API authentication failed (Missing or invalid PlantNet/iNaturalist API Key): " . $response->status() . " - " . $response->body());

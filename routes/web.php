@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Animal_suggestionController;
 use App\Http\Controllers\AnimalController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\CreatureController;
 use App\Http\Controllers\Plant_suggestionController;
 use App\Http\Controllers\PlantController;

@@ -23,10 +23,13 @@ const submitForm = () => {
         onSuccess: (page) => {
             submissionStatus.value = 'Reconhecimento concluído com sucesso!';
             form.reset();
+            console.log(page.props.results);
+            
         },
         onError: (errors) => {
             submissionStatus.value = 'Houve um erro na submissão. Verifique os campos.';
             console.error("Validation Errors:", errors);
+            console.log(page.props.results);
         },
         onFinish: () => {
             if (submissionStatus.value === 'Enviando...') {
